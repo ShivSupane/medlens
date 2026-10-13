@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Environment secrets — NEVER commit these
+server/.env
+.env
+*.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Build outputs (if added in future)
+dist/
+build/
+
+# Docker — the compose file and Dockerfile ARE committed (no secrets inside)
+# nginx.conf IS committed (no secrets inside, just a template)
+# Only the actual .env file is excluded (covered by *.env rule above)

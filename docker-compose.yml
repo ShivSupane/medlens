@@ -1,0 +1,18 @@
+services:
+  medlens:
+    build: .
+    container_name: medlens
+    restart: unless-stopped
+
+    # Load secrets from .env file on the host — never baked into the image
+    env_file:
+      - server/.env
+
+    ports:
+      - "3000:3000"
+
+    # Limit resource usage (good practice on a t2.micro)
+    deploy:
+      resources:
+        limits:
+          memory: 512M

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedLens — Prescription Savings & Generic Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ─── Header ──────────────────────────────────────────────────────── -->
+  <header class="app-header">
+    <div class="header-inner">
+      <a href="/" class="brand-link">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M2 12h20"/>
+          </svg>
+        </div>
+        <span class="brand-name">MedLens</span>
+        <span class="brand-badge">Jan Aushadhi</span>
+      </a>
+
+      <nav class="header-nav" aria-label="Main navigation">
+        <!-- Voice Language Selector -->
+        <label class="lang-wrap" title="Audio readout language">
+          <span aria-hidden="true">🌐</span>
+          <select id="ttsLangSelect" class="lang-select" aria-label="Audio language">
+            <option value="en-IN" selected>English</option>
+            <option value="hi-IN">हिन्दी</option>
+            <option value="ta-IN">தமிழ்</option>
+            <option value="mr-IN">मराठी</option>
+            <option value="bn-IN">বাংলা</option>
+            <option value="gu-IN">ગુજરાતી</option>
+            <option value="es-ES">Español</option>
+          </select>
+        </label>
+
+        <button id="themeToggleBtn" class="btn btn-icon" title="Toggle theme" aria-label="Toggle dark/light mode">
+          <span id="themeToggleIcon">🌙</span>
+          <span id="themeToggleText">Dark</span>
+        </button>
+
+        <button id="sampleBtn" class="btn btn-outline-sm" title="Load a demo prescription">
+          ⚡ Try Demo
+        </button>
+
+        <button id="headerCopilotBtn" class="btn btn-cta" aria-label="Open clinical assistant">
+          💬 Ask Copilot
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ─── Hero Band ────────────────────────────────────────────────────── -->
+  <div class="hero-band">
+    <div class="hero-inner">
+      <p class="hero-pill">✦ Free · Instant · No sign-up needed</p>
+      <h1 class="hero-headline">Stop overpaying for branded medicines</h1>
+      <p class="hero-sub">Upload your prescription or paste the text. We'll find the certified PMBJP Jan Aushadhi generics and show you exactly how much you save — per strip, per month.</p>
+    </div>
+  </div>
+
+  <!-- ─── Main Shell ───────────────────────────────────────────────────── -->
+  <main class="app-main" id="mainContent">
+
+    <!-- Scanner Card -->
+    <section class="card scanner-card" id="uploadSection" aria-label="Prescription scanner">
+
+      <div class="scanner-tabs" role="tablist" aria-label="Input method">
+        <button type="button" role="tab" class="tab active" id="tabPhoto" aria-selected="true">
+          📸 Upload Image
+        </button>
+        <button type="button" role="tab" class="tab" id="tabText" aria-selected="false">
+          ✍️ Type / Paste Text
+        </button>
+      </div>
+
+      <!-- Photo drop zone -->
+      <div class="dropzone" id="dropZone" role="region" aria-label="File upload area">
+        <input type="file" id="fileInput" accept="image/*" capture="environment" hidden aria-hidden="true" />
+        <div class="dropzone-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <p class="dropzone-title">Drop your prescription here</p>
+        <p class="dropzone-hint">PNG, JPG, WebP — up to 10 MB. Doctor's note, hospital slip, or handwritten Rx all work.</p>
+        <div class="dropzone-actions">
+          <button type="button" class="btn btn-primary" id="browseBtn">Choose File</button>
+          <span class="or-text" aria-hidden="true">or</span>
+          <button type="button" class="btn btn-ghost" id="quickSampleLink">Load Demo ⚡</button>
+        </div>
+      </div>
+
+      <!-- Preview bar -->
+      <div id="previewContainer" class="preview-bar" hidden>
+        <img id="previewImage" class="preview-thumb" alt="Prescription preview" />
+        <div class="preview-info">
+          <span class="preview-name" id="previewFilename">prescription.jpg</span>
+          <span class="preview-size" id="previewFilesize">Ready</span>
+        </div>
+        <div class="preview-actions">
+          <button id="analyzeBtn" class="btn btn-primary">
+            <span class="spinner" id="analyzeSpinner" hidden aria-hidden="true"></span>
+            <span id="analyzeBtnText">Analyze Prescription</span>
+          </button>
+          <button id="clearBtn" class="btn btn-ghost-sm" aria-label="Clear selected file">✕ Clear</button>
+        </div>
+      </div>
+
+      <!-- Text input mode -->
+      <div class="text-mode" id="textInputContainer" hidden>
+        <p class="text-mode-hint">Type or paste medicine names and instructions — one per line works fine:</p>
+        <textarea
+          id="prescriptionTextInput"
+          class="rx-textarea"
+          rows="6"
+          placeholder="e.g.&#10;Tab Augmentin 625 — 1 twice daily after food × 5 days&#10;Tab Dolo 650 — 1 three times daily if fever&#10;Cap Pantocid 40 — 1 daily before breakfast × 7 days"
+          aria-label="Enter prescription text"
+        ></textarea>
+        <div class="text-mode-actions">
+          <button type="button" class="btn btn-primary" id="analyzeTextBtn">
+            <span class="spinner" id="analyzeTextSpinner" hidden aria-hidden="true"></span>
+            <span id="analyzeTextBtnText">Analyze Text</span>
+          </button>
+          <button type="button" class="btn btn-ghost" id="sampleTextBtn">Paste Example</button>
+        </div>
+      </div>
+
+      <p id="uploadStatusMsg" class="status-msg" aria-live="polite" role="status"></p>
+    </section>
+
+    <!-- ─── Results (revealed after analysis) ──────────────────────────── -->
+    <div id="resultsContainer" hidden>
+
+      <!-- Savings summary -->
+      <section class="card savings-card" aria-label="Savings summary">
+        <div class="savings-backdrop" aria-hidden="true"></div>
+        <div class="savings-body">
+          <div class="savings-top">
+            <div>
+              <p class="savings-eyebrow">PMBJP Jan Aushadhi Savings</p>
+              <h2 class="savings-headline">Your Prescription Savings</h2>
+            </div>
+            <span class="savings-pct-pill" id="savingsPercentPill">— % cheaper</span>
+          </div>
+
+          <div class="savings-grid">
+            <div class="savings-stat">
+              <span class="stat-lbl">Save right now</span>
+              <div class="stat-num emerald">₹<span id="instantSavingsVal">0</span></div>
+              <span class="stat-note">switching to verified generics</span>
+            </div>
+            <div class="savings-stat">
+              <span class="stat-lbl">Branded → Generic</span>
+              <div class="cost-row">
+                <span class="cost-old">₹<span id="brandedCostVal">0</span></span>
+                <span class="cost-arrow" aria-hidden="true">→</span>
+                <span class="cost-new">₹<span id="genericCostVal">0</span></span>
+              </div>
+              <span class="stat-note">same active salt, different label</span>
+            </div>
+            <div class="savings-stat">
+              <span class="stat-lbl">Projected monthly</span>
+              <div class="stat-num cyan">₹<span id="monthlySavingsVal">0</span></div>
+              <span class="stat-note">for ongoing/chronic meds</span>
+            </div>
+            <div class="savings-stat">
+              <span class="stat-lbl">Running total saved</span>
+              <div class="stat-num gold">₹<span id="lifetimeSavingsVal">0</span></div>
+              <span class="stat-note">across all your scans</span>
+            </div>
+          </div>
+
+          <div class="savings-actions">
+            <div class="actions-left">
+              <button id="openChemistSlipBtn" class="btn btn-white-sm">📄 Chemist Slip</button>
+              <button id="exportCalendarBtn" class="btn btn-white-sm">📅 Export Schedule</button>
+            </div>
+            <button id="resetSavingsBtn" class="btn btn-ghost-dim" title="Reset cumulative tracker">Reset tracker</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Daily timetable -->
+      <section class="card timetable-card" id="timetableCard" aria-label="Daily dosage schedule">
+        <div class="section-head">
+          <span class="section-icon" aria-hidden="true">⏰</span>
+          <div>
+            <h3 class="section-title">Daily Dosage Schedule</h3>
+            <p class="section-sub">Which medicine to take at each time of day</p>
+          </div>
+        </div>
+        <div class="timetable-grid" id="timetableGrid"></div>
+      </section>
+
+      <!-- Clinical synergy -->
+      <section class="card synergy-card" id="synergyCard" aria-label="Prescription rationale">
+        <div class="section-head">
+          <span class="section-icon" aria-hidden="true">🧬</span>
+          <div>
+            <h3 class="section-title">Why these medicines together?</h3>
+            <p class="section-sub">Clinical reasoning behind this combination</p>
+          </div>
+        </div>
+        <p id="synergyText" class="synergy-body">Loading…</p>
+      </section>
+
+      <!-- Drug interactions -->
+      <section class="card interaction-card" id="interactionCard" hidden aria-label="Drug interaction check">
+        <div class="interaction-head">
+          <span class="interaction-badge" id="interactionBadge">Safety Notice</span>
+          <h3 class="section-title">Drug Interaction Check</h3>
+        </div>
+        <div id="interactionList" class="interaction-list"></div>
+      </section>
+
+      <!-- Medicine cards -->
+      <section class="medicines-section" aria-label="Verified medicines">
+        <div class="med-section-head">
+          <div>
+            <h3 class="section-title">Verified Medicines</h3>
+            <p class="section-sub">Active salts, generics, meal guidance & precautions</p>
+          </div>
+          <span class="med-count" id="medCountPill" aria-live="polite">0 Medicines</span>
+        </div>
+        <div id="medicinesList" class="medicines-list"></div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ─── Page Footer ──────────────────────────────────────────────────── -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-disclaimer">
+        ⚠️ <strong>Medical Disclaimer:</strong> MedLens provides educational information only. Always confirm medication changes with your doctor or registered pharmacist. Generic substitution requires a valid prescription.
+      </p>
+      <p class="footer-copy">© 2026 MedLens · Built for India's Jan Aushadhi Programme · Not a medical service</p>
+    </div>
+  </footer>
+
+  <!-- ─── Copilot FAB ───────────────────────────────────────────────────── -->
+  <button id="copilotFab" class="copilot-fab" aria-label="Open clinical assistant" title="Clinical Copilot">
+    <span class="fab-pulse" aria-hidden="true"></span>
+    <span class="fab-icon" aria-hidden="true">💬</span>
+    <span class="fab-label">Copilot</span>
+  </button>
+
+  <!-- ─── Copilot Drawer ───────────────────────────────────────────────── -->
+  <div class="drawer-overlay" id="copilotDrawerOverlay" hidden role="dialog" aria-modal="true" aria-label="Clinical Copilot">
+    <div class="drawer-backdrop" id="copilotBackdrop" aria-hidden="true"></div>
+    <aside class="drawer-panel" id="copilotDrawerPanel">
+      <div class="drawer-header">
+        <div class="drawer-header-info">
+          <div class="chat-avatar" aria-hidden="true">Rx</div>
+          <div>
+            <p class="drawer-title">Clinical Copilot</p>
+            <p class="drawer-status"><span class="status-dot" aria-hidden="true"></span>Regimen aware</p>
+          </div>
+        </div>
+        <div class="drawer-header-actions">
+          <button id="clearChatBtn" class="btn btn-ghost-sm" aria-label="Clear chat">Clear</button>
+          <button id="closeCopilotBtn" class="btn-close" aria-label="Close copilot">✕</button>
+        </div>
+      </div>
+
+      <div id="emergencyAlertBanner" class="emergency-banner" hidden role="alert">
+        🚨 <strong>Emergency detected.</strong> Call <strong>108 / 112</strong> immediately.
+      </div>
+
+      <div class="suggestions-bar" id="chatSuggestions" role="list" aria-label="Suggested questions">
+        <button class="chip" role="listitem" data-query="When should I take each medicine?">⏰ Daily Schedule</button>
+        <button class="chip" role="listitem" data-query="What best meals should I eat with these medicines?">🍲 Best Meals</button>
+        <button class="chip" role="listitem" data-query="What foods or drinks should I strictly avoid?">🥗 Foods to Avoid</button>
+        <button class="chip" role="listitem" data-query="Why is Pantocid prescribed with my other medicines?">🛡️ Why Pantocid?</button>
+        <button class="chip" role="listitem" data-query="What if I miss a dose of my medicine?">⏳ Missed Dose</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-label="Chat messages">
+        <div class="chat-msg bot">
+          <div class="msg-bubble">
+            Hello! Once you scan or paste your prescription, I can explain meal timings, why each drug is prescribed, what foods to avoid, and which generics to ask for at the chemist.
+          </div>
+          <p class="msg-meta">Clinical Copilot</p>
+        </div>
+      </div>
+
+      <form class="chat-form" id="chatForm" aria-label="Ask a question">
+        <input
+          type="text"
+          id="chatInput"
+          class="chat-input"
+          placeholder="Ask about doses, meals, side effects…"
+          autocomplete="off"
+          maxlength="800"
+          required
+          aria-label="Your message"
+        />
+        <button type="submit" class="btn-send" id="chatSendBtn" aria-label="Send message">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </form>
+
+      <p class="chat-disclaimer">For educational purposes only — always confirm with your doctor or pharmacist.</p>
+    </aside>
+  </div>
+
+  <!-- ─── Chemist Slip Modal ───────────────────────────────────────────── -->
+  <div class="modal" id="chemistModal" hidden role="dialog" aria-modal="true" aria-labelledby="slipModalTitle">
+    <div class="modal-box">
+      <div class="modal-top">
+        <div>
+          <p class="modal-eyebrow">Ready to print or share</p>
+          <h3 class="modal-title" id="slipModalTitle">Pharmacist Dispensing Slip</h3>
+        </div>
+        <button class="btn-close" id="closeChemistModal" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-content">
+        <p class="modal-desc">Hand this to your chemist to dispense affordable Jan Aushadhi or certified generic equivalents:</p>
+        <div class="slip-box" id="chemistSlipText"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-primary" id="copySlipBtn">📋 Copy</button>
+        <button class="btn btn-outline-sm" id="printSlipBtn">🖨️ Print</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

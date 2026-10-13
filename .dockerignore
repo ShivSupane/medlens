@@ -1,0 +1,28 @@
+# Never copy these into the Docker image
+
+# Secrets
+server/.env
+.env
+*.env
+
+# Dependencies (installed fresh inside the image)
+node_modules/
+server/node_modules/
+
+# Git history
+.git/
+.gitignore
+
+# Docs (not needed at runtime)
+docs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor config
+.vscode/
+.idea/
+
+# Logs
+*.log

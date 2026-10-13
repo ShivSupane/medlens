@@ -1,0 +1,1821 @@
+{
+  "drugs": [
+    {
+      "id": "amox_clav",
+      "brand": "Augmentin 625 Duo",
+      "aliases": [
+        "augmentin",
+        "augmentin 625",
+        "augmentin duo",
+        "amoxyclav",
+        "moxikind-cv"
+      ],
+      "salt": "Amoxicillin (500mg) + Clavulanic Acid (125mg)",
+      "saltNormalized": "amoxicillin + clavulanic acid",
+      "strength": "625mg",
+      "class": "Penicillin Antibiotic + Beta-Lactamase Inhibitor",
+      "conditionHint": "Prescribed for bacterial infections of the respiratory tract, throat, sinuses, ear, lungs, or urinary tract.",
+      "precautions": [
+        "Take with or immediately after food to prevent severe stomach cramps and nausea.",
+        "Complete the entire prescribed 5-7 day course even if symptoms disappear early.",
+        "Avoid alcohol during the course to prevent liver strain."
+      ],
+      "foodInstructions": "Take at the start of a meal for optimal absorption and gastric comfort.",
+      "priceINR": 223,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Amoxy-Clav 625",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 60,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Moxikind-CV 625",
+          "manufacturer": "Mankind Pharma",
+          "priceINR": 135,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Clavam 625",
+          "manufacturer": "Alkem Laboratories",
+          "priceINR": 148,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "azithromycin",
+      "brand": "Azithral 500",
+      "aliases": [
+        "azithral",
+        "azithromycin",
+        "azithral 500",
+        "azee 500",
+        "zithrocin"
+      ],
+      "salt": "Azithromycin (500mg)",
+      "saltNormalized": "azithromycin",
+      "strength": "500mg",
+      "class": "Macrolide Antibiotic",
+      "conditionHint": "Used for respiratory chest infections, tonsillitis, sinusitis, ear infections, and skin infections.",
+      "precautions": [
+        "Typically taken once daily for 3 or 5 days at the exact same hour.",
+        "Take either 1 hour before eating or 2 hours after a meal with plenty of water.",
+        "Inform your doctor if you experience rapid or irregular heartbeats."
+      ],
+      "foodInstructions": "Best taken on an empty stomach (1 hour before or 2 hours after meals).",
+      "priceINR": 125,
+      "packSize": "5 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Azithromycin 500",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 42,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Azee 500",
+          "manufacturer": "Cipla Ltd",
+          "priceINR": 92,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Zithrocin 500",
+          "manufacturer": "FDC Ltd",
+          "priceINR": 84,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "cefixime",
+      "brand": "Taxim-O 200",
+      "aliases": [
+        "taxim o",
+        "taxim-o",
+        "cefixime",
+        "mahacef",
+        "zipexim"
+      ],
+      "salt": "Cefixime (200mg)",
+      "saltNormalized": "cefixime",
+      "strength": "200mg",
+      "class": "Cephalosporin Antibiotic (3rd Gen)",
+      "conditionHint": "Used to treat uncomplicated typhoid fever, urinary tract infections, and bronchitis.",
+      "precautions": [
+        "Take with food to minimize indigestion.",
+        "Do not skip doses; maintain 12-hour intervals.",
+        "Drink at least 2 liters of water daily while on this medication."
+      ],
+      "foodInstructions": "Take after meals.",
+      "priceINR": 118,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Cefixime 200",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 38,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Mahacef 200",
+          "manufacturer": "Mankind Pharma",
+          "priceINR": 78,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "paracetamol",
+      "brand": "Dolo 650",
+      "aliases": [
+        "dolo",
+        "dolo 650",
+        "crocin 650",
+        "calpol 650",
+        "pacimol 650",
+        "paracetamol"
+      ],
+      "salt": "Paracetamol / Acetaminophen (650mg)",
+      "saltNormalized": "paracetamol",
+      "strength": "650mg",
+      "class": "Analgesic & Antipyretic",
+      "conditionHint": "Relieves mild to moderate body pain, headache, dental ache, and reduces high fever.",
+      "precautions": [
+        "Never exceed 4000mg (4 grams) within 24 hours to protect the liver.",
+        "Maintain a minimum 4 to 6-hour gap between doses.",
+        "Avoid concurrent alcohol consumption."
+      ],
+      "foodInstructions": "Can be taken with or without food. Taking with food prevents stomach acidity in sensitive individuals.",
+      "priceINR": 34,
+      "packSize": "15 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Paracetamol 650",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 9,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Calpol 650",
+          "manufacturer": "GSK India",
+          "priceINR": 29,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Pacimol 650",
+          "manufacturer": "Ipca Labs",
+          "priceINR": 22,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "ibuprofen",
+      "brand": "Brufen 400",
+      "aliases": [
+        "brufen",
+        "brufen 400",
+        "ibuprofen",
+        "ibugesic"
+      ],
+      "salt": "Ibuprofen (400mg)",
+      "saltNormalized": "ibuprofen",
+      "strength": "400mg",
+      "class": "Non-Steroidal Anti-Inflammatory Drug (NSAID)",
+      "conditionHint": "Reduces swelling, joint inflammation, dental pain, sprains, and fever.",
+      "precautions": [
+        "Always take strictly AFTER a full meal or with milk to avoid gastritis or ulcers.",
+        "Avoid if you have active stomach ulcers, severe kidney disease, or bleeding disorders.",
+        "Often co-prescribed with an antacid (Pantoprazole) to protect the stomach lining."
+      ],
+      "foodInstructions": "Always take with food or milk.",
+      "priceINR": 28,
+      "packSize": "15 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Ibuprofen 400",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 8,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Ibugesic 400",
+          "manufacturer": "Cipla Ltd",
+          "priceINR": 19,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "ibuprofen_paracetamol",
+      "brand": "Combiflam",
+      "aliases": [
+        "combiflam",
+        "ibugesic plus",
+        "flexon"
+      ],
+      "salt": "Ibuprofen (400mg) + Paracetamol (325mg)",
+      "saltNormalized": "ibuprofen + paracetamol",
+      "strength": "400mg + 325mg",
+      "class": "NSAID Combination Analgesic",
+      "conditionHint": "Strong painkiller for muscular aches, toothaches, joint pain, and inflammatory fevers.",
+      "precautions": [
+        "Must be taken after meals. Do not take on an empty stomach.",
+        "Do not take additional Paracetamol while using Combiflam.",
+        "Use shortest duration necessary (3-5 days)."
+      ],
+      "foodInstructions": "Take after meals.",
+      "priceINR": 48,
+      "packSize": "20 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Ibu-Para",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 14,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Ibugesic Plus",
+          "manufacturer": "Cipla",
+          "priceINR": 32,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "pantoprazole",
+      "brand": "Pantocid 40",
+      "aliases": [
+        "pantocid",
+        "pantocid 40",
+        "pan 40",
+        "pantoprazole",
+        "pantodac",
+        "pantosec"
+      ],
+      "salt": "Pantoprazole (40mg)",
+      "saltNormalized": "pantoprazole",
+      "strength": "40mg",
+      "class": "Proton Pump Inhibitor (PPI)",
+      "conditionHint": "Treats acid reflux, heartburn, GERD, and protects the stomach lining against NSAID painkillers.",
+      "precautions": [
+        "Take on an empty stomach, ideally 30-45 minutes before breakfast.",
+        "Swallow whole; do not crush or chew the enteric-coated tablet.",
+        "Long-term continuous use (>1 year) should be monitored for B12/magnesium levels."
+      ],
+      "foodInstructions": "Take 30 minutes before the first meal of the day.",
+      "priceINR": 92,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Pantoprazole 40",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 18,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Pan 40",
+          "manufacturer": "Alkem Laboratories",
+          "priceINR": 68,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Pantop 40",
+          "manufacturer": "Aristo Pharma",
+          "priceINR": 62,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "pantoprazole_domperidone",
+      "brand": "Pan-D",
+      "aliases": [
+        "pan-d",
+        "pan d",
+        "pantocid d",
+        "pantodac dsr",
+        "pantoprazole domperidone"
+      ],
+      "salt": "Pantoprazole (40mg) + Domperidone (30mg SR)",
+      "saltNormalized": "pantoprazole + domperidone",
+      "strength": "40mg + 30mg",
+      "class": "PPI + Prokinetic Antiemetic",
+      "conditionHint": "Prescribed for acid reflux accompanied by nausea, vomiting, fullness, or dyspepsia.",
+      "precautions": [
+        "Take once daily on an empty stomach 30 minutes before breakfast.",
+        "Do not exceed recommended duration without physician review.",
+        "Notify physician if you have a history of cardiac arrhythmias."
+      ],
+      "foodInstructions": "Take strictly 30 minutes before morning breakfast.",
+      "priceINR": 195,
+      "packSize": "15 Capsules",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Panto-Dom SR",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 35,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Pantocid-DSR",
+          "manufacturer": "Sun Pharma",
+          "priceINR": 142,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "amlodipine",
+      "brand": "Amlokind 5",
+      "aliases": [
+        "amlokind",
+        "amlodipine",
+        "amlokind 5",
+        "amlopres 5",
+        "norvasc",
+        "stamlo"
+      ],
+      "salt": "Amlodipine (5mg)",
+      "saltNormalized": "amlodipine",
+      "strength": "5mg",
+      "class": "Calcium Channel Blocker (Antihypertensive)",
+      "conditionHint": "Lowers high blood pressure (hypertension) and prevents chest pain (angina).",
+      "precautions": [
+        "Take at the exact same time every day for consistent 24-hour pressure control.",
+        "Do not discontinue abruptly, as blood pressure may spike rebound.",
+        "May cause mild ankle swelling or dizziness when standing up."
+      ],
+      "foodInstructions": "Can be taken with or without food, preferably morning.",
+      "priceINR": 48,
+      "packSize": "15 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Amlodipine 5",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 6,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Amlopres 5",
+          "manufacturer": "Cipla Ltd",
+          "priceINR": 34,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Amlogard 5",
+          "manufacturer": "Zydus Cadila",
+          "priceINR": 30,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "telmisartan",
+      "brand": "Telma 40",
+      "aliases": [
+        "telma",
+        "telma 40",
+        "telmisartan",
+        "telmikind 40",
+        "cresar 40"
+      ],
+      "salt": "Telmisartan (40mg)",
+      "saltNormalized": "telmisartan",
+      "strength": "40mg",
+      "class": "Angiotensin II Receptor Blocker (ARB)",
+      "conditionHint": "Protects against heart attacks, strokes, and treats chronic high blood pressure.",
+      "precautions": [
+        "Do not take during pregnancy; report pregnancy immediately to doctor.",
+        "Avoid potassium supplements or potassium-rich salt substitutes without medical testing.",
+        "Check blood pressure periodically and record values."
+      ],
+      "foodInstructions": "Take with or without food at the same hour each day.",
+      "priceINR": 128,
+      "packSize": "15 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Telmisartan 40",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 19,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Telmikind 40",
+          "manufacturer": "Mankind Pharma",
+          "priceINR": 65,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Cresar 40",
+          "manufacturer": "Cipla Ltd",
+          "priceINR": 82,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "metformin",
+      "brand": "Glycomet 500",
+      "aliases": [
+        "glycomet",
+        "glycomet 500",
+        "metformin",
+        "glyciphage 500",
+        "obimet"
+      ],
+      "salt": "Metformin (500mg)",
+      "saltNormalized": "metformin",
+      "strength": "500mg",
+      "class": "Biguanide Antidiabetic",
+      "conditionHint": "First-line medicine to control high blood sugar in patients with Type 2 Diabetes.",
+      "precautions": [
+        "Take with or immediately after meals to reduce gastrointestinal discomfort or loose stools.",
+        "Stay well-hydrated. Avoid heavy alcohol intake.",
+        "Temporarily withhold before medical imaging tests requiring iodinated contrast dye."
+      ],
+      "foodInstructions": "Take with or immediately after food.",
+      "priceINR": 42,
+      "packSize": "20 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Metformin 500",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 8,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Glyciphage 500",
+          "manufacturer": "Franco-Indian",
+          "priceINR": 28,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Obimet 500",
+          "manufacturer": "USV Ltd",
+          "priceINR": 26,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "atorvastatin",
+      "brand": "Atorva 10",
+      "aliases": [
+        "atorva",
+        "atorva 10",
+        "atorvastatin",
+        "atorlip 10",
+        "storvas 10",
+        "lipitor"
+      ],
+      "salt": "Atorvastatin (10mg)",
+      "saltNormalized": "atorvastatin",
+      "strength": "10mg",
+      "class": "HMG-CoA Reductase Inhibitor (Statin)",
+      "conditionHint": "Lowers 'bad' LDL cholesterol and triglycerides, reducing the risk of heart attacks and stroke.",
+      "precautions": [
+        "Best taken at bedtime, as cholesterol synthesis peaks during the night.",
+        "Avoid drinking large quantities of grapefruit juice (interferes with statin breakdown).",
+        "Report unexplained muscle soreness, weakness, or tenderness promptly."
+      ],
+      "foodInstructions": "Take at night before sleep, with or without food.",
+      "priceINR": 110,
+      "packSize": "15 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Atorvastatin 10",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 15,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Atorlip 10",
+          "manufacturer": "Cipla Ltd",
+          "priceINR": 68,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Storvas 10",
+          "manufacturer": "Sun Pharma",
+          "priceINR": 75,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "montelukast_levocetirizine",
+      "brand": "Montair-LC",
+      "aliases": [
+        "montair lc",
+        "montair-lc",
+        "monticope",
+        "levocet m",
+        "montek lc"
+      ],
+      "salt": "Montelukast (10mg) + Levocetirizine (5mg)",
+      "saltNormalized": "montelukast + levocetirizine",
+      "strength": "10mg + 5mg",
+      "class": "Leukotriene Receptor Antagonist + Antihistamine",
+      "conditionHint": "Relieves allergic rhinitis, runny nose, sneezing, pollen allergy, and allergic asthma flare-ups.",
+      "precautions": [
+        "Take once daily in the evening, as levocetirizine can cause mild drowsiness.",
+        "Avoid driving or alcohol until you know how this medication affects your alertness.",
+        "Do not discontinue abruptly during allergy season without medical advice."
+      ],
+      "foodInstructions": "Take at night before bedtime, with or without water.",
+      "priceINR": 178,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Montelukast + Levo",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 28,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Monticope",
+          "manufacturer": "Mankind Pharma",
+          "priceINR": 98,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Montek-LC",
+          "manufacturer": "Sun Pharma",
+          "priceINR": 120,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "fexofenadine",
+      "brand": "Allegra 120",
+      "aliases": [
+        "allegra",
+        "allegra 120",
+        "fexofenadine",
+        "fexo"
+      ],
+      "salt": "Fexofenadine (120mg)",
+      "saltNormalized": "fexofenadine",
+      "strength": "120mg",
+      "class": "Non-Sedating 2nd Gen Antihistamine",
+      "conditionHint": "Treats allergic skin rashes, hives, seasonal hay fever, and itchiness without making you drowsy.",
+      "precautions": [
+        "Take with plain water. Avoid taking with fruit juices (apple, orange, grapefruit) within 4 hours.",
+        "Do not take antacids containing aluminum or magnesium within 2 hours of this tablet.",
+        "Safe for daytime work and driving."
+      ],
+      "foodInstructions": "Take with water on an empty stomach or with a light meal. Avoid citrus fruit juices.",
+      "priceINR": 142,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Fexofenadine 120",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 30,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Fexova 120",
+          "manufacturer": "Torrent Pharma",
+          "priceINR": 82,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "calcium_vitamin_d3",
+      "brand": "Shelcal 500",
+      "aliases": [
+        "shelcal",
+        "shelcal 500",
+        "calcium d3",
+        "cipcal 500"
+      ],
+      "salt": "Calcium Carbonate (1250mg eq to 500mg elemental Ca) + Vitamin D3 (250 IU)",
+      "saltNormalized": "calcium + vitamin d3",
+      "strength": "500mg + 250IU",
+      "class": "Nutritional Mineral & Vitamin Supplement",
+      "conditionHint": "Strengthens bones and teeth, prevents osteoporosis, and meets calcium needs.",
+      "precautions": [
+        "Take after meals; calcium carbonate requires stomach acid for maximum absorption.",
+        "Separate by at least 2 hours from thyroid medicine (Thyronorm) or iron supplements.",
+        "Drink plenty of water throughout the day."
+      ],
+      "foodInstructions": "Take with or right after lunch or dinner.",
+      "priceINR": 138,
+      "packSize": "15 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Calcium + Vit D3",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 24,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Cipcal 500",
+          "manufacturer": "Cipla Ltd",
+          "priceINR": 98,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "b_complex",
+      "brand": "Becosules Z",
+      "aliases": [
+        "becosules",
+        "becosules z",
+        "b-complex",
+        "neurobion forte"
+      ],
+      "salt": "B-Complex Vitamins + Vitamin C + Zinc",
+      "saltNormalized": "b-complex + vitamin c + zinc",
+      "strength": "Multivitamin",
+      "class": "Water-Soluble Vitamin Supplement",
+      "conditionHint": "Promotes recovery from infection, relieves mouth ulcers, and boosts metabolic immunity.",
+      "precautions": [
+        "May cause bright yellow urine — this is completely harmless riboflavin (Vit B2) excretion.",
+        "Take in the morning or afternoon with food to prevent mild nausea.",
+        "Keep the capsule strip away from moisture and heat."
+      ],
+      "foodInstructions": "Take after breakfast.",
+      "priceINR": 56,
+      "packSize": "20 Capsules",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi B-Complex + Zinc",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 12,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Neurobion Forte",
+          "manufacturer": "Procter & Gamble",
+          "priceINR": 42,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "aspirin_low_dose",
+      "brand": "Ecosprin 75",
+      "aliases": [
+        "ecosprin",
+        "ecosprin 75",
+        "aspirin 75",
+        "disprin 75"
+      ],
+      "salt": "Aspirin / Acetylsalicylic Acid (75mg)",
+      "saltNormalized": "aspirin",
+      "strength": "75mg",
+      "class": "Antiplatelet / Blood Thinner",
+      "conditionHint": "Prevents blood clot formation, reducing the risk of heart attacks and strokes.",
+      "precautions": [
+        "Swallow whole after food. Do not chew enteric-coated tablet.",
+        "Do NOT combine with painkillers like Brufen/Diclofenac without explicit doctor approval.",
+        "Inform dentists or surgeons that you are on blood-thinning aspirin before any procedure."
+      ],
+      "foodInstructions": "Take after meals.",
+      "priceINR": 12,
+      "packSize": "14 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Aspirin 75",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 4,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Delisprin 75",
+          "manufacturer": "Aristo Pharma",
+          "priceINR": 9,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "opox_cv",
+      "brand": "Opox-CV 625",
+      "aliases": [
+        "opox-cv",
+        "opox cv",
+        "opoxcv",
+        "opox cv 625",
+        "opox-cv625",
+        "opox cv625"
+      ],
+      "salt": "Amoxicillin (500mg) + Clavulanic Acid (125mg)",
+      "saltNormalized": "amoxicillin + clavulanic acid",
+      "strength": "625mg",
+      "class": "Penicillin Antibiotic + Beta-Lactamase Inhibitor",
+      "conditionHint": "Broad-spectrum antibiotic prescribed for bacterial infections of the throat, chest, sinuses, ear, urinary tract, and skin. The clavulanic acid component protects the amoxicillin from bacterial resistance.",
+      "precautions": [
+        "Take with or immediately after food to prevent nausea and stomach cramps.",
+        "Complete the entire prescribed course (typically 5–7 days) even if you feel better early.",
+        "Inform your doctor if you are allergic to penicillin before taking this drug.",
+        "Avoid alcohol during the course as it may increase side-effect severity."
+      ],
+      "foodInstructions": "Take at the start of a meal for best absorption and minimal gastric irritation.",
+      "priceINR": 210,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Amoxy-Clav 625",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 60,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Augmentin 625 Duo",
+          "manufacturer": "GSK",
+          "priceINR": 223,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Moxikind-CV 625",
+          "manufacturer": "Mankind Pharma",
+          "priceINR": 135,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Clavam 625",
+          "manufacturer": "Alkem Laboratories",
+          "priceINR": 148,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "aldigesic_sp",
+      "brand": "Aldigesic-SP",
+      "aliases": [
+        "aldigesic-sp",
+        "aldigesic sp",
+        "aldigesicsp",
+        "aldigesic",
+        "diclofenac serratiopeptidase paracetamol"
+      ],
+      "salt": "Diclofenac (50mg) + Paracetamol (325mg) + Serratiopeptidase (10mg)",
+      "saltNormalized": "diclofenac + paracetamol + serratiopeptidase",
+      "strength": "Standard Tablet",
+      "class": "NSAID Analgesic + Antipyretic + Proteolytic Enzyme (Triple Action)",
+      "conditionHint": "Prescribed for acute pain with inflammation, post-surgical edema, dental pain, musculoskeletal pain, and fever. Serratiopeptidase reduces post-injury tissue swelling faster than NSAIDs alone.",
+      "precautions": [
+        "Take strictly after food — Diclofenac on an empty stomach can cause gastric ulcers.",
+        "Do not take with other NSAIDs (Aspirin, Ibuprofen) simultaneously — risk of GI bleed.",
+        "Use for short-term acute pain only; do not exceed the prescribed duration.",
+        "Avoid in patients with kidney disease or history of stomach ulcers."
+      ],
+      "foodInstructions": "Take immediately after a meal to protect stomach lining.",
+      "priceINR": 95,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Diclofenac+Para Tabs",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 25,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Voveran-SP",
+          "manufacturer": "Novartis",
+          "priceINR": 110,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Signoflam",
+          "manufacturer": "Ipca Laboratories",
+          "priceINR": 85,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Dicloren-SP",
+          "manufacturer": "Torrent Pharma",
+          "priceINR": 78,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "breezy_levosalbutamol",
+      "brand": "Breezy Nasal Spray",
+      "aliases": [
+        "breezy",
+        "breezy spray",
+        "breezy nasal",
+        "levosalbutamol spray",
+        "levolin"
+      ],
+      "salt": "Levosalbutamol (0.31mg/actuation)",
+      "saltNormalized": "levosalbutamol",
+      "strength": "0.31mg/actuation",
+      "class": "Short-Acting Beta-2 Agonist (SABA) Bronchodilator",
+      "conditionHint": "Prescribed for rapid relief of bronchospasm in asthma and COPD, as well as nasal congestion. Levosalbutamol has fewer cardiac side effects than standard Salbutamol (Albuterol).",
+      "precautions": [
+        "Shake well before every use. Use correct inhalation/spray technique for full dose delivery.",
+        "Do not exceed the prescribed number of puffs/actuations per dose to avoid tremors or palpitations.",
+        "Carry this as a rescue inhaler — do not use as a substitute for long-term controller medicine.",
+        "Inform your doctor if you need it more than 3 times per week; this may signal worsening asthma control."
+      ],
+      "foodInstructions": "Can be used anytime, independent of meals. Rinse mouth with water after inhalation use.",
+      "priceINR": 145,
+      "packSize": "1 Inhaler (200 doses)",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Levosalbutamol Inhaler",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 55,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Levolin Inhaler",
+          "manufacturer": "Cipla",
+          "priceINR": 130,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Astalift Inhaler",
+          "manufacturer": "Glenmark",
+          "priceINR": 118,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "dolo650",
+      "brand": "Dolo 650",
+      "aliases": [
+        "dolo 650",
+        "dolo650",
+        "dolo",
+        "paracetamol 650",
+        "crocin 650",
+        "calpol 650",
+        "acetaminophen 650"
+      ],
+      "salt": "Paracetamol (650mg)",
+      "saltNormalized": "paracetamol",
+      "strength": "650mg",
+      "class": "Analgesic / Antipyretic",
+      "conditionHint": "Commonly prescribed for fever, mild-to-moderate pain, headache, and body ache associated with viral infections.",
+      "precautions": [
+        "Do not exceed 4g (4000mg) of paracetamol in 24 hours from all sources.",
+        "Avoid alcohol — combining with alcohol greatly raises risk of liver toxicity.",
+        "Check all other medications you are taking for hidden paracetamol content."
+      ],
+      "foodInstructions": "Can be taken with or without food.",
+      "priceINR": 32,
+      "packSize": "15 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Paracetamol 650",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 6,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Crocin Pain Relief 650",
+          "manufacturer": "GSK",
+          "priceINR": 35,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Calpol 650",
+          "manufacturer": "Johnson & Johnson",
+          "priceINR": 30,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "montair_lc",
+      "brand": "Montair LC",
+      "aliases": [
+        "montair lc",
+        "montair-lc",
+        "montelukast levocetirizine",
+        "montelast lc",
+        "singulair lc",
+        "telekast l",
+        "monticope"
+      ],
+      "salt": "Montelukast (10mg) + Levocetirizine (5mg)",
+      "saltNormalized": "montelukast + levocetirizine",
+      "strength": "10mg + 5mg",
+      "class": "Leukotriene Receptor Antagonist + Antihistamine (Allergy & Asthma Combo)",
+      "conditionHint": "Prescribed for allergic rhinitis, urticaria (hives), and seasonal allergies. The combination controls both inflammatory (leukotriene) and histamine pathways for dual-action allergy relief.",
+      "precautions": [
+        "Take at night — Levocetirizine causes significant drowsiness and impairs driving.",
+        "Do not operate heavy machinery after taking this medicine.",
+        "Avoid alcohol as it potentiates CNS sedation."
+      ],
+      "foodInstructions": "Can be taken with or without food. Best at bedtime.",
+      "priceINR": 135,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Montelukast+Levocet",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 38,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Monticope",
+          "manufacturer": "Cipla",
+          "priceINR": 120,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Telekast-L",
+          "manufacturer": "Lupin",
+          "priceINR": 95,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "sinarest",
+      "brand": "Sinarest",
+      "aliases": [
+        "sinarest",
+        "sinarest tablet",
+        "sinarest af",
+        "cetirizine paracetamol phenylephrine",
+        "cold tablet"
+      ],
+      "salt": "Paracetamol (500mg) + Cetirizine (5mg) + Phenylephrine (10mg) + Caffeine (30mg)",
+      "saltNormalized": "paracetamol + cetirizine + phenylephrine + caffeine",
+      "strength": "Combination Tablet",
+      "class": "Cold & Flu Combination Formulation",
+      "conditionHint": "Prescribed for common cold, flu, and upper respiratory tract infections. Provides combined antipyretic (paracetamol), antihistamine (cetirizine), nasal decongestant (phenylephrine), and alertness-restoring (caffeine) effects.",
+      "precautions": [
+        "Avoid taking with other paracetamol-containing medicines to prevent overdose.",
+        "Phenylephrine component can raise blood pressure — use with caution in hypertensive patients.",
+        "Do not drive if feeling sedated from Cetirizine."
+      ],
+      "foodInstructions": "Take after food to reduce nausea.",
+      "priceINR": 55,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Cold+Flu Combo",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 15,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "D-Cold Total",
+          "manufacturer": "Pfizer",
+          "priceINR": 65,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Coldact",
+          "manufacturer": "Piramal",
+          "priceINR": 60,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "glycomet",
+      "brand": "Glycomet 500",
+      "aliases": [
+        "glycomet",
+        "glycomet 500",
+        "metformin",
+        "metformin 500",
+        "glucophage",
+        "glucophage 500",
+        "fortamet"
+      ],
+      "salt": "Metformin Hydrochloride (500mg)",
+      "saltNormalized": "metformin",
+      "strength": "500mg",
+      "class": "Biguanide Antidiabetic",
+      "conditionHint": "First-line treatment for Type 2 Diabetes Mellitus. Lowers blood glucose by reducing hepatic glucose production and improving peripheral insulin sensitivity.",
+      "precautions": [
+        "Take with meals to minimize GI side effects (nausea, diarrhea).",
+        "Do NOT take if you have kidney disease (eGFR < 30) as it can cause lactic acidosis.",
+        "Inform your doctor before any contrast imaging (CT/MRI) — metformin must be withheld.",
+        "Alcohol magnifies the risk of hypoglycemia — avoid excessive intake."
+      ],
+      "foodInstructions": "Take with or immediately after a meal. Never on an empty stomach.",
+      "priceINR": 40,
+      "packSize": "20 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Metformin 500",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 12,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Glucophage 500",
+          "manufacturer": "Merck",
+          "priceINR": 55,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Carbophage 500",
+          "manufacturer": "USV",
+          "priceINR": 35,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "telma_h",
+      "brand": "Telma-H 40",
+      "aliases": [
+        "telma-h",
+        "telma h",
+        "telmisartan hydrochlorothiazide",
+        "telmikind h",
+        "telmisartan hctz",
+        "micardis hct"
+      ],
+      "salt": "Telmisartan (40mg) + Hydrochlorothiazide (12.5mg)",
+      "saltNormalized": "telmisartan + hydrochlorothiazide",
+      "strength": "40mg + 12.5mg",
+      "class": "ARB Antihypertensive + Thiazide Diuretic",
+      "conditionHint": "Combination prescribed for hypertension (high blood pressure). Telmisartan blocks angiotensin II receptors to relax blood vessels; Hydrochlorothiazide removes excess sodium and water via urine.",
+      "precautions": [
+        "Take at the same time each day. Do not skip doses — sudden blood pressure spikes can cause strokes.",
+        "Monitor potassium levels — thiazide diuretics can cause hypokalemia.",
+        "Limit high-potassium foods if combined with potassium supplements.",
+        "Avoid dehydration in hot weather while on diuretics."
+      ],
+      "foodInstructions": "Take at the same time each day, with or without food. Morning dosing preferred.",
+      "priceINR": 155,
+      "packSize": "14 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Telmisartan-HCT",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 48,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Telmikind-H 40",
+          "manufacturer": "Mankind",
+          "priceINR": 120,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Micardis Plus 40",
+          "manufacturer": "Boehringer Ingelheim",
+          "priceINR": 245,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "vitamin_d3",
+      "brand": "Calcirol 60000 IU",
+      "aliases": [
+        "calcirol",
+        "calcirol 60000",
+        "vitamin d3",
+        "vitamin d 60000",
+        "cholecalciferol 60000",
+        "uprise d3",
+        "d3 sachets",
+        "calcitas"
+      ],
+      "salt": "Cholecalciferol (Vitamin D3) 60,000 IU",
+      "saltNormalized": "cholecalciferol",
+      "strength": "60,000 IU",
+      "class": "Vitamin D3 Supplement",
+      "conditionHint": "Prescribed for Vitamin D deficiency or insufficiency. Essential for calcium absorption, bone mineralization, immune function, and mood regulation.",
+      "precautions": [
+        "Take once weekly (or as prescribed). High-dose Vitamin D is taken in loading doses — do not increase frequency.",
+        "Dissolve sachet in water or milk and consume immediately.",
+        "Regular monitoring of serum Vitamin D levels is recommended during supplementation.",
+        "Avoid Vitamin D toxicity — do not self-supplement beyond prescribed dose."
+      ],
+      "foodInstructions": "Take with a fat-containing meal (milk, ghee, nuts) for best absorption — Vitamin D is fat-soluble.",
+      "priceINR": 85,
+      "packSize": "4 Sachets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Vitamin D3 60K",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 28,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Uprise D3 60K",
+          "manufacturer": "Pfizer",
+          "priceINR": 120,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "D-Rise 60K",
+          "manufacturer": "Sun Pharma",
+          "priceINR": 98,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "combiflam",
+      "brand": "Combiflam",
+      "aliases": [
+        "combiflam",
+        "ibuprofen paracetamol",
+        "ibugesic plus",
+        "brufen paracetamol",
+        "advil plus"
+      ],
+      "salt": "Ibuprofen (400mg) + Paracetamol (325mg)",
+      "saltNormalized": "ibuprofen + paracetamol",
+      "strength": "400mg + 325mg",
+      "class": "NSAID Analgesic + Antipyretic Combination",
+      "conditionHint": "Prescribed for moderate pain, dental pain, menstrual pain, muscle aches, and fever. The dual-action combination provides faster and stronger pain relief than either drug alone.",
+      "precautions": [
+        "Take strictly after food — Ibuprofen on an empty stomach causes gastric erosion.",
+        "Do not combine with other NSAIDs or blood thinners.",
+        "Avoid in patients with peptic ulcers, kidney disease, or heart failure.",
+        "Short-term use only; do not exceed 5 days without medical advice."
+      ],
+      "foodInstructions": "Always take immediately after a full meal.",
+      "priceINR": 42,
+      "packSize": "20 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Ibu+Para Combo",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 12,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Ibugesic Plus",
+          "manufacturer": "Cipla",
+          "priceINR": 38,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Brufen Plus",
+          "manufacturer": "Abbott",
+          "priceINR": 55,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "cefixime",
+      "brand": "Taxim-O 200",
+      "aliases": [
+        "taxim-o",
+        "taxim o",
+        "taxim",
+        "cefixime",
+        "cefixime 200",
+        "cefspan",
+        "suprax",
+        "zifi"
+      ],
+      "salt": "Cefixime (200mg)",
+      "saltNormalized": "cefixime",
+      "strength": "200mg",
+      "class": "Third-Generation Cephalosporin Antibiotic",
+      "conditionHint": "Prescribed for urinary tract infections, typhoid fever, respiratory infections, gonorrhea, and tonsillitis. A broad-spectrum antibiotic effective against resistant bacterial strains.",
+      "precautions": [
+        "Complete the full antibiotic course to prevent antibiotic resistance.",
+        "Inform your doctor of any cephalosporin or penicillin allergy — cross-reactivity possible.",
+        "May cause diarrhea — stay hydrated and inform doctor if it becomes severe."
+      ],
+      "foodInstructions": "Can be taken with or without food. With food reduces GI upset.",
+      "priceINR": 145,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Cefixime 200",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 42,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Zifi 200",
+          "manufacturer": "FDC Limited",
+          "priceINR": 120,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Cefspan 200",
+          "manufacturer": "Getz Pharma",
+          "priceINR": 130,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "lisinopril",
+      "brand": "Lisinopril 10",
+      "aliases": [
+        "lisinopril",
+        "lisinopril 10",
+        "zestril",
+        "prinivil",
+        "qbrelis",
+        "lisodur"
+      ],
+      "salt": "Lisinopril (10mg)",
+      "saltNormalized": "lisinopril",
+      "strength": "10mg",
+      "class": "ACE Inhibitor Antihypertensive",
+      "conditionHint": "Prescribed for hypertension, heart failure, and kidney protection in diabetic patients. Widely used first-line blood pressure medication globally.",
+      "precautions": [
+        "Dry cough is a very common side effect — inform your doctor if persistent.",
+        "Do NOT take during pregnancy — causes fetal harm (Category D/X).",
+        "Avoid potassium supplements or salt substitutes unless directed.",
+        "Do not stop abruptly — taper under medical supervision."
+      ],
+      "foodInstructions": "Can be taken with or without food at the same time each day.",
+      "priceINR": 85,
+      "packSize": "14 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Lisinopril 10",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 28,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Zestril 10",
+          "manufacturer": "AstraZeneca",
+          "priceINR": 115,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Hipril 10",
+          "manufacturer": "Cipla",
+          "priceINR": 78,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "atorvastatin",
+      "brand": "Atorva 10",
+      "aliases": [
+        "atorva",
+        "atorvastatin",
+        "atorvastatin 10",
+        "lipitor",
+        "lipitor 10",
+        "storvas",
+        "tonact",
+        "atorlip"
+      ],
+      "salt": "Atorvastatin (10mg)",
+      "saltNormalized": "atorvastatin",
+      "strength": "10mg",
+      "class": "HMG-CoA Reductase Inhibitor (Statin) — Lipid-Lowering Agent",
+      "conditionHint": "Prescribed to reduce LDL (bad cholesterol) and triglycerides, and to lower risk of cardiovascular events (heart attack, stroke) in high-risk patients.",
+      "precautions": [
+        "Take at night — cholesterol is synthesized more actively during sleep, making evening dosing more effective.",
+        "Avoid grapefruit juice — it significantly increases statin blood levels, raising toxicity risk.",
+        "Report unexplained muscle pain, weakness, or dark urine immediately (possible rhabdomyolysis).",
+        "This is a long-term medication — do not stop without medical advice even if you feel fine."
+      ],
+      "foodInstructions": "Preferably take in the evening or at night, with or without food.",
+      "priceINR": 95,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Atorvastatin 10",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 22,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Lipitor 10",
+          "manufacturer": "Pfizer",
+          "priceINR": 180,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Storvas 10",
+          "manufacturer": "Sun Pharma",
+          "priceINR": 85,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "amoxicillin",
+      "brand": "Amoxil 500",
+      "aliases": [
+        "amoxil",
+        "amoxicillin",
+        "amoxicillin 500",
+        "trimox",
+        "amox 500",
+        "novamox"
+      ],
+      "salt": "Amoxicillin (500mg)",
+      "saltNormalized": "amoxicillin",
+      "strength": "500mg",
+      "class": "Penicillin Antibiotic",
+      "conditionHint": "Broad-spectrum antibiotic for ear infections (otitis media), strep throat, tonsillitis, bronchitis, and urinary tract infections.",
+      "precautions": [
+        "Complete the full prescribed course even if symptoms resolve early.",
+        "Inform doctor of any penicillin allergy — anaphylaxis risk.",
+        "Can cause mild rash in patients with infectious mononucleosis — inform your doctor."
+      ],
+      "foodInstructions": "Can be taken with or without food.",
+      "priceINR": 65,
+      "packSize": "15 Capsules",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Amoxicillin 500",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 18,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Novamox 500",
+          "manufacturer": "Cipla",
+          "priceINR": 55,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Mox 500",
+          "manufacturer": "Ranbaxy",
+          "priceINR": 48,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "ciprofloxacin",
+      "brand": "Ciplox 500",
+      "aliases": [
+        "ciplox",
+        "ciprofloxacin",
+        "ciprofloxacin 500",
+        "cipro",
+        "cipro 500",
+        "ciproxin",
+        "cifran"
+      ],
+      "salt": "Ciprofloxacin (500mg)",
+      "saltNormalized": "ciprofloxacin",
+      "strength": "500mg",
+      "class": "Fluoroquinolone Antibiotic",
+      "conditionHint": "Prescribed for urinary tract infections, chest infections, bone/joint infections, gastroenteritis, and typhoid. One of the most widely prescribed antibiotics globally.",
+      "precautions": [
+        "Take on an empty stomach or 2 hours after a meal for best absorption.",
+        "Avoid antacids, iron, and calcium supplements within 2 hours of dosing — they reduce absorption.",
+        "Stay well-hydrated — drink plenty of water to prevent kidney crystal formation.",
+        "Avoid prolonged sun exposure — ciprofloxacin causes photosensitivity."
+      ],
+      "foodInstructions": "Ideally take on an empty stomach. Drink 2 full glasses of water with each dose.",
+      "priceINR": 78,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Ciprofloxacin 500",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 20,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Cifran 500",
+          "manufacturer": "Pfizer",
+          "priceINR": 95,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Cipro 500",
+          "manufacturer": "Bayer",
+          "priceINR": 140,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "esomeprazole",
+      "brand": "Nexium 40",
+      "aliases": [
+        "nexium",
+        "esomeprazole",
+        "esomeprazole 40",
+        "nexpro",
+        "sompraz",
+        "raciper",
+        "nexum"
+      ],
+      "salt": "Esomeprazole (40mg)",
+      "saltNormalized": "esomeprazole",
+      "strength": "40mg",
+      "class": "Proton Pump Inhibitor (PPI) — Gastric Acid Suppressant",
+      "conditionHint": "Prescribed for GERD (acid reflux), gastric ulcers, erosive esophagitis, and stomach protection during NSAID therapy. A stronger and longer-lasting acid blocker than Omeprazole.",
+      "precautions": [
+        "Take 30–60 minutes before the first meal of the day for maximum effectiveness.",
+        "Do not crush or chew — swallow whole to preserve enteric coating.",
+        "Long-term use (>1 year) can reduce magnesium and calcium absorption — monitor with doctor.",
+        "Can mask symptoms of gastric cancer — inform your doctor of persistent heartburn."
+      ],
+      "foodInstructions": "Take 30–60 minutes before breakfast on an empty stomach.",
+      "priceINR": 125,
+      "packSize": "14 Capsules",
+      "alternatives": [
+        {
+          "brand": "Jan Aushadhi Esomeprazole 40",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 35,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Nexpro 40",
+          "manufacturer": "Torrent",
+          "priceINR": 95,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Sompraz 40",
+          "manufacturer": "Sun Pharma",
+          "priceINR": 112,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "rosuvastatin",
+      "brand": "Novastat 10",
+      "aliases": [
+        "novastat",
+        "novastat 10",
+        "novastat 20",
+        "rosuvas",
+        "rosuvas 10",
+        "rosuvas 20",
+        "rosuvastatin",
+        "crestor",
+        "crestor 10",
+        "crestor 20",
+        "rozucor",
+        "turbovas",
+        "lipirose",
+        "rosuvel"
+      ],
+      "salt": "Rosuvastatin (10mg)",
+      "saltNormalized": "rosuvastatin",
+      "strength": "10mg",
+      "class": "HMG-CoA Reductase Inhibitor (Statin) — Lipid-Lowering Agent",
+      "conditionHint": "Prescribed to reduce high LDL ('bad') cholesterol and triglycerides in blood, raise HDL ('good') cholesterol, and prevent heart attacks and strokes.",
+      "precautions": [
+        "Take once daily preferably in the evening or at bedtime with water.",
+        "Strictly avoid grapefruit juice as it increases drug accumulation and muscle toxicity risk.",
+        "Promptly report any unexplained muscle aches, tenderness, or weakness to your doctor.",
+        "Periodic liver function tests (LFT) and lipid profile checks are recommended."
+      ],
+      "foodInstructions": "Can be taken with or without food, preferably after dinner or at bedtime with a glass of water.",
+      "priceINR": 195,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Rosuvastatin 10",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 32,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Rosuvas 10",
+          "manufacturer": "Ranbaxy / Sun Pharma",
+          "priceINR": 155,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Rozucor 10",
+          "manufacturer": "Torrent Pharma",
+          "priceINR": 140,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Crestor 10",
+          "manufacturer": "AstraZeneca",
+          "priceINR": 280,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "zerodol_sp",
+      "brand": "Zerodol-SP",
+      "aliases": [
+        "zerodol sp",
+        "zerodol-sp",
+        "hifenac-d",
+        "aceclo-sera",
+        "signoflam",
+        "zerodol"
+      ],
+      "salt": "Aceclofenac (100mg) + Paracetamol (325mg) + Serratiopeptidase (15mg)",
+      "saltNormalized": "aceclofenac + paracetamol + serratiopeptidase",
+      "strength": "Triple Combination",
+      "class": "NSAID Analgesic, Antipyretic & Anti-inflammatory Enzyme",
+      "conditionHint": "Prescribed for acute severe pain, swelling, tooth extraction, post-operative inflammation, and musculoskeletal injury.",
+      "precautions": [
+        "Always take with or immediately after food to shield the stomach lining.",
+        "Do not combine with other painkillers or cold syrups containing paracetamol.",
+        "Avoid alcohol during treatment to prevent severe gastric mucosal irritation."
+      ],
+      "foodInstructions": "Always take after a solid meal with water. Never take on an empty stomach.",
+      "priceINR": 125,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Aceclo-Para-Serratio",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 35,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Hifenac-D",
+          "manufacturer": "Intas Pharma",
+          "priceINR": 98,
+          "isJanAushadhi": false
+        },
+        {
+          "brand": "Signoflam",
+          "manufacturer": "Lupin",
+          "priceINR": 105,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "zerodol_p",
+      "brand": "Zerodol-P",
+      "aliases": [
+        "zerodol p",
+        "zerodol-p",
+        "hifenac-p",
+        "aceclo plus",
+        "aceclofenac paracetamol"
+      ],
+      "salt": "Aceclofenac (100mg) + Paracetamol (325mg)",
+      "saltNormalized": "aceclofenac + paracetamol",
+      "strength": "Combo Tablet",
+      "class": "NSAID Analgesic & Antipyretic",
+      "conditionHint": "Effective relief for joint pain, arthritis, backache, spondylitis, and headache.",
+      "precautions": [
+        "Take after meals to avoid gastrointestinal discomfort.",
+        "Not recommended for patients with active peptic ulcers without PPI protection."
+      ],
+      "foodInstructions": "Take strictly after meals with water.",
+      "priceINR": 68,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Aceclofenac + Paracetamol",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 18,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Hifenac-P",
+          "manufacturer": "Intas Pharma",
+          "priceINR": 58,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "neurobion_forte",
+      "brand": "Neurobion Forte",
+      "aliases": [
+        "neurobion",
+        "neurobion forte",
+        "becosules",
+        "polybion",
+        "vitamin b complex",
+        "b12"
+      ],
+      "salt": "Vitamin B-Complex (B1, B2, B3, B5, B6, B12)",
+      "saltNormalized": "vitamin b-complex",
+      "strength": "Multivitamin",
+      "class": "Neurotropic B-Vitamin Complex",
+      "conditionHint": "Treats vitamin B deficiencies, peripheral neuropathy, nerve tingling/numbness, and fatigue.",
+      "precautions": [
+        "Safe for long-term daily supplementation.",
+        "May cause harmless bright yellow coloration of urine due to Vitamin B2 (Riboflavin)."
+      ],
+      "foodInstructions": "Take in the morning with or after breakfast with water.",
+      "priceINR": 42,
+      "packSize": "30 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Vitamin B-Complex with B12",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 12,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Becosules",
+          "manufacturer": "Pfizer",
+          "priceINR": 52,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "uprise_d3",
+      "brand": "Uprise-D3 60K",
+      "aliases": [
+        "uprise d3",
+        "uprise d3 60k",
+        "caldikind 60k",
+        "tayo 60k",
+        "d3 60k",
+        "cholecalciferol 60000",
+        "vitamin d3 60k"
+      ],
+      "salt": "Cholecalciferol / Vitamin D3 (60,000 IU)",
+      "saltNormalized": "cholecalciferol",
+      "strength": "60,000 IU",
+      "class": "High-Dose Fat-Soluble Vitamin",
+      "conditionHint": "Corrects severe Vitamin D deficiency, supports immune health, bone mineralization, and neuromuscular function.",
+      "precautions": [
+        "Take strictly ONCE A WEEK as prescribed by doctor. Do NOT take daily.",
+        "Best absorbed with a meal containing dietary fats (milk, ghee, or nuts)."
+      ],
+      "foodInstructions": "Take once weekly with warm milk or after a meal containing fat.",
+      "priceINR": 180,
+      "packSize": "4 Softgels",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Cholecalciferol 60K",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 35,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Caldikind 60K",
+          "manufacturer": "Mankind",
+          "priceINR": 140,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "clopilet_75",
+      "brand": "Clopilet 75",
+      "aliases": [
+        "clopilet",
+        "clopilet 75",
+        "deplatt",
+        "plavix",
+        "clopidogrel 75"
+      ],
+      "salt": "Clopidogrel (75mg)",
+      "saltNormalized": "clopidogrel",
+      "strength": "75mg",
+      "class": "Antiplatelet Agent (P2Y12 Inhibitor)",
+      "conditionHint": "Reduces the risk of ischemic stroke and heart attack in patients with recent heart attacks or stents.",
+      "precautions": [
+        "Take consistently at the same time every day.",
+        "Avoid combining with omeprazole without cardiologist guidance (use pantoprazole instead)."
+      ],
+      "foodInstructions": "Can be taken with or without food at the same time each day.",
+      "priceINR": 120,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Clopidogrel 75",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 28,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Deplatt 75",
+          "manufacturer": "Torrent Pharma",
+          "priceINR": 98,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "cilacar_10",
+      "brand": "Cilacar 10",
+      "aliases": [
+        "cilacar",
+        "cilacar 10",
+        "cilacar 20",
+        "cilnidipine",
+        "cilaheart",
+        "cilnidipine 10"
+      ],
+      "salt": "Cilnidipine (10mg)",
+      "saltNormalized": "cilnidipine",
+      "strength": "10mg",
+      "class": "Dual L/N-Type Calcium Channel Blocker (CCB)",
+      "conditionHint": "Treats high blood pressure (hypertension) with kidney protection and lower incidence of pedal ankle swelling.",
+      "precautions": [
+        "Take consistently every morning.",
+        "Avoid abrupt discontinuation to prevent rebound hypertension."
+      ],
+      "foodInstructions": "Take in the morning after breakfast.",
+      "priceINR": 135,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Cilnidipine 10",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 25,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Cilaheart 10",
+          "manufacturer": "Mankind",
+          "priceINR": 85,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "thyronorm_50",
+      "brand": "Thyronorm 50",
+      "aliases": [
+        "thyronorm",
+        "thyronorm 50",
+        "thyronorm 25",
+        "thyronorm 75",
+        "thyronorm 100",
+        "eltroxin",
+        "levothyroxine"
+      ],
+      "salt": "Levothyroxine Sodium (50mcg)",
+      "saltNormalized": "levothyroxine",
+      "strength": "50mcg",
+      "class": "Synthetic Thyroid Hormone (T4)",
+      "conditionHint": "Replaces missing thyroid hormone in hypothyroidism, sluggish metabolism, and post-thyroidectomy.",
+      "precautions": [
+        "Strictly take FIRST THING IN THE MORNING with plain water on an empty stomach.",
+        "Wait at least 45 to 60 minutes before having tea, coffee, breakfast, or calcium supplements."
+      ],
+      "foodInstructions": "Take 45–60 mins before morning tea/breakfast on an empty stomach with plain water.",
+      "priceINR": 165,
+      "packSize": "120 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Levothyroxine 50",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 45,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Eltroxin 50",
+          "manufacturer": "GSK",
+          "priceINR": 140,
+          "isJanAushadhi": false
+        }
+      ]
+    },
+    {
+      "id": "meftal_spas",
+      "brand": "Meftal-Spas",
+      "aliases": [
+        "meftal spas",
+        "meftal-spas",
+        "colimex",
+        "spasmo proxyvon",
+        "mefenamic dicyclomine"
+      ],
+      "salt": "Mefenamic Acid (250mg) + Dicyclomine (10mg)",
+      "saltNormalized": "mefenamic acid + dicyclomine",
+      "strength": "Combo Tablet",
+      "class": "NSAID Analgesic + Antispasmodic",
+      "conditionHint": "Relieves menstrual period pain, abdominal colic spasms, intestinal cramps, and kidney stone colic.",
+      "precautions": [
+        "Take only as needed for acute pain/cramps.",
+        "Always take after food to prevent stomach irritation."
+      ],
+      "foodInstructions": "Take strictly after meals with plenty of water.",
+      "priceINR": 52,
+      "packSize": "10 Tablets",
+      "alternatives": [
+        {
+          "brand": "PMBJP Jan Aushadhi Mefenamic + Dicyclomine",
+          "manufacturer": "PMBJP (Jan Aushadhi)",
+          "priceINR": 14,
+          "isJanAushadhi": true
+        },
+        {
+          "brand": "Colimex",
+          "manufacturer": "Wallace",
+          "priceINR": 45,
+          "isJanAushadhi": false
+        }
+      ]
+    }
+  ]
+}
