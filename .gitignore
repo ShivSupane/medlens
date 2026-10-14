@@ -22,6 +22,7 @@ Thumbs.db
 # Build outputs (if added in future)
 dist/
 build/
+*.traineddata
 
 # Docker — the compose file and Dockerfile ARE committed (no secrets inside)
 # nginx.conf IS committed (no secrets inside, just a template)

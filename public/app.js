@@ -253,9 +253,10 @@ function setupEventListeners() {
   chatForm.addEventListener('submit', handleChatSubmit);
   clearChatBtn.addEventListener('click', clearChat);
   chatSuggestions.addEventListener('click', (e) => {
-    const btn = e.target.closest('.chip-btn');
+    const btn = e.target.closest('.chip, .chip-btn');
     if (!btn) return;
     const query = btn.dataset.query;
+    if (!query) return;
     chatInput.value = query;
     handleChatSubmit(new Event('submit'));
   });
@@ -322,10 +323,10 @@ async function analyzePrescription() {
     }
 
     renderPrescriptionReport(data);
-    uploadStatusMsg.textContent = `✓ Successfully verified ${data.metrics.totalMedicines} medicine(s) in prescription regimen.`;
+    uploadStatusMsg.innerHTML = `✓ Successfully verified <strong>${data.metrics.totalMedicines}</strong> medicine(s) via <em>${data.providerUsed || 'AI Engine'}</em>.`;
   } catch (err) {
     console.error(err);
-    uploadStatusMsg.textContent = `⚠️ Error: ${err.message}`;
+    uploadStatusMsg.innerHTML = `<span style="color: #ef4444; font-weight: 500;">⚠️ ${err.message}</span>`;
   } finally {
     setAnalyzingState(false);
   }
@@ -354,10 +355,10 @@ async function analyzeTextPrescription() {
     }
 
     renderPrescriptionReport(data);
-    uploadStatusMsg.textContent = `✓ Successfully verified ${data.metrics.totalMedicines} medicine(s) in prescription regimen.`;
+    uploadStatusMsg.innerHTML = `✓ Successfully verified <strong>${data.metrics.totalMedicines}</strong> medicine(s) via <em>${data.providerUsed || 'AI Engine'}</em>.`;
   } catch (err) {
     console.error(err);
-    uploadStatusMsg.textContent = `⚠️ Error: ${err.message}`;
+    uploadStatusMsg.innerHTML = `<span style="color: #ef4444; font-weight: 500;">⚠️ ${err.message}</span>`;
   } finally {
     setTextAnalyzingState(false);
   }

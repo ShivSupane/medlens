@@ -61,43 +61,43 @@
   --mono:   'JetBrains Mono', 'Courier New', monospace;
 }
 
-/* ── Dark Theme ─────────────────────────────────────────────── */
+/* ── Professional Health-Tech Dark Theme ─────────────────────────────── */
 [data-theme="dark"] {
-  --bg-page:    #0C1610;
-  --bg-card:    #111D15;
-  --bg-raised:  #162119;
-  --bg-muted:   #1B2D20;
+  --bg-page:    #090D16; /* Deep obsidian navy canvas */
+  --bg-card:    #0F172A; /* Rich clinical slate card background */
+  --bg-raised:  #1A2234; /* Elevated components & interactive inputs */
+  --bg-muted:   #1E293B; /* Subtle slot containers & pill tags */
 
-  --txt-main:   #F0FAF5;
-  --txt-muted:  #8FB39E;
-  --txt-soft:   #587063;
-  --txt-inv:    #0C1610;
+  --txt-main:   #F8FAFC; /* Crisp ultra-clean white text */
+  --txt-muted:  #94A3B8; /* Slate-400 secondary text */
+  --txt-soft:   #64748B; /* Slate-500 subtle captions */
+  --txt-inv:    #090D16;
 
-  --green-900:  #3DC494;
-  --green-700:  #4DD9A6;
-  --green-600:  #3DC494;
-  --green-500:  #3DC494;
-  --green-400:  #6EE7B7;
-  --green-100:  rgba(61,196,148,.14);
-  --green-50:   rgba(61,196,148,.08);
-  --glow:       rgba(61,196,148,.22);
+  --green-900:  #10B981;
+  --green-700:  #34D399;
+  --green-600:  #10B981;
+  --green-500:  #10B981;
+  --green-400:  #34D399;
+  --green-100:  rgba(16, 185, 129, 0.16);
+  --green-50:   rgba(16, 185, 129, 0.08);
+  --glow:       rgba(16, 185, 129, 0.25);
 
   --red:        #F87171;
-  --red-bg:     rgba(239,68,68,.14);
+  --red-bg:     rgba(239, 68, 68, 0.16);
   --amber:      #FBBF24;
-  --amber-bg:   rgba(245,158,11,.14);
-  --blue:       #60A5FA;
-  --blue-bg:    rgba(96,165,250,.12);
+  --amber-bg:   rgba(245, 158, 11, 0.16);
+  --blue:       #38BDF8;
+  --blue-bg:    rgba(56, 189, 248, 0.14);
 
-  --gold:       #FBBF24;
-  --gold-bg:    rgba(251,191,36,.12);
+  --gold:       #F59E0B;
+  --gold-bg:    rgba(245, 158, 11, 0.14);
 
-  --border:     #1F3428;
-  --border-sub: #182B1E;
+  --border:     rgba(255, 255, 255, 0.09);
+  --border-sub: rgba(255, 255, 255, 0.05);
 
-  --sh-sm:  0 1px 3px rgba(0,0,0,.35);
-  --sh-md:  0 4px 16px -2px rgba(0,0,0,.45);
-  --sh-lg:  0 12px 32px -4px rgba(0,0,0,.55);
+  --sh-sm:  0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --sh-md:  0 6px 20px -2px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --sh-lg:  0 16px 40px -4px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -130,7 +130,8 @@ a { text-decoration: none; color: inherit; }
 }
 
 [data-theme="dark"] .app-header {
-  background: rgba(17,29,21,.9);
+  background: rgba(15, 23, 42, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .header-inner {
@@ -1634,4 +1635,211 @@ a { text-decoration: none; color: inherit; }
   .tab, .dropzone, .preview-bar, .text-mode, #uploadSection { display: none !important; }
   .app-main { padding: 0; }
   .card { box-shadow: none; border: 1px solid #ccc; }
+}
+
+/* ============================================================
+   Professional Health-Tech Dark Theme Component Styling
+   ============================================================ */
+[data-theme="dark"] .card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .dropzone {
+  background: #0F172A;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme="dark"] .dropzone:hover,
+[data-theme="dark"] .dropzone.dragover {
+  border-color: var(--green-400);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+[data-theme="dark"] .rx-textarea {
+  background: #0B0F19;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #F8FAFC;
+}
+
+[data-theme="dark"] .rx-textarea:focus {
+  border-color: var(--green-400);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+[data-theme="dark"] .preview-bar {
+  background: #1A2234;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .med-card {
+  background: #0F172A;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .med-main-info {
+  background: #0F172A;
+}
+
+[data-theme="dark"] .med-brand-name {
+  color: #F8FAFC;
+}
+
+[data-theme="dark"] .med-why-box {
+  background: rgba(16, 185, 129, 0.07);
+  border-left: 3px solid var(--green-400);
+}
+
+[data-theme="dark"] .med-why-title {
+  color: var(--green-400);
+}
+
+[data-theme="dark"] .med-why-desc {
+  color: #CBD5E1;
+}
+
+[data-theme="dark"] .med-meal-box {
+  background: #141E30;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .med-meal-timing-pill {
+  background: rgba(56, 189, 248, 0.14);
+  color: #38BDF8;
+}
+
+[data-theme="dark"] .meal-avoid-line {
+  background: rgba(245, 158, 11, 0.12);
+  color: #FCD34D;
+  border-left-color: #F59E0B;
+}
+
+[data-theme="dark"] .med-alt-box {
+  background: linear-gradient(180deg, #131E30 0%, #0F172A 100%);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+}
+
+[data-theme="dark"] .alt-name {
+  color: var(--green-400);
+}
+
+[data-theme="dark"] .alt-eyebrow {
+  color: var(--green-400);
+}
+
+[data-theme="dark"] .synergy-card {
+  background: rgba(16, 185, 129, 0.06);
+  border-color: rgba(16, 185, 129, 0.18);
+}
+
+[data-theme="dark"] .synergy-card .card-head h2 {
+  color: var(--green-400);
+}
+
+[data-theme="dark"] .synergy-body {
+  color: #CBD5E1;
+}
+
+[data-theme="dark"] .timetable-slot {
+  background: #131E30;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .slot-pill-card {
+  background: #1A2234;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .slot-pill-name {
+  color: #F8FAFC;
+}
+
+[data-theme="dark"] .interaction-item.high {
+  background: rgba(239, 68, 68, 0.1);
+  border-left-color: #F87171;
+  color: #FECACA;
+}
+
+[data-theme="dark"] .interaction-item.moderate {
+  background: rgba(245, 158, 11, 0.1);
+  border-left-color: #FBBF24;
+  color: #FDE68A;
+}
+
+[data-theme="dark"] .interaction-item.synergy {
+  background: rgba(16, 185, 129, 0.1);
+  border-left-color: #34D399;
+  color: #A7F3D0;
+}
+
+[data-theme="dark"] .badge-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .badge-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #FBBF24;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .badge-green {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .drawer-panel {
+  background: #0F172A;
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+[data-theme="dark"] .drawer-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #131E30;
+}
+
+[data-theme="dark"] .drawer-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0F172A;
+}
+
+[data-theme="dark"] .chat-input {
+  background: #0B0F19;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #F8FAFC;
+}
+
+[data-theme="dark"] .chat-input:focus {
+  border-color: var(--green-400);
+}
+
+[data-theme="dark"] .chat-msg.bot .msg-bubble {
+  background: #1E293B;
+  color: #F8FAFC;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+[data-theme="dark"] .chat-msg.user .msg-bubble {
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .modal-content {
+  background: #0F172A;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .slip-box {
+  background: #0B0F19;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #F8FAFC;
+}
+
+[data-theme="dark"] .hero-band {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, transparent 100%);
 }

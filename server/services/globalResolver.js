@@ -23,7 +23,7 @@ async function queryOpenFDA(drugName) {
 
     const url = `https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${encodeURIComponent(clean)}"&limit=1`;
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 4000);
+    const timer = setTimeout(() => controller.abort(), 2500);
 
     const res = await fetch(url, { signal: controller.signal });
     clearTimeout(timer);
@@ -83,7 +83,7 @@ async function queryRxNorm(drugName) {
 
     const url = `https://rxnav.nlm.nih.gov/REST/approximateTerm.json?term=${encodeURIComponent(clean)}&maxEntries=3`;
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 4000);
+    const timer = setTimeout(() => controller.abort(), 2000);
 
     const res = await fetch(url, { signal: controller.signal });
     clearTimeout(timer);
@@ -236,7 +236,7 @@ If completely unrecognized, return {"unknown": true}.`;
 
   try {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
+    const timer = setTimeout(() => controller.abort(), 3500);
 
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -313,7 +313,18 @@ async function resolveGlobal(drugName) {
     return resolutionCache.get(cacheKey);
   }
 
-  // Tier 2: openFDA
+  // Tier 1 (High-speed Clinical AI): Groq Qwen (Sub-second Indian & Global Pharmacology)
+  if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim() !== '') {
+    console.log(`[GlobalResolver] Fast Tier — Groq Clinical resolver for: "${drugName}"`);
+    const groqResult = await queryGroqAI(drugName);
+    if (groqResult) {
+      console.log(`[GlobalResolver] ✓ Groq resolved: ${drugName} → ${groqResult.salt}`);
+      resolutionCache.set(cacheKey, groqResult);
+      return groqResult;
+    }
+  }
+
+  // Tier 2: openFDA (US National Drug Registry - 2.5s timeout)
   console.log(`[GlobalResolver] Tier 2 — openFDA lookup for: "${drugName}"`);
   const fdaResult = await queryOpenFDA(drugName);
   if (fdaResult) {
@@ -322,17 +333,8 @@ async function resolveGlobal(drugName) {
     return fdaResult;
   }
 
-  // Tier 3: Groq Qwen 2.5 Clinical Resolver (Sub-second worldwide pharmacology)
-  console.log(`[GlobalResolver] Tier 3 — Groq Clinical resolver for: "${drugName}"`);
-  const groqResult = await queryGroqAI(drugName);
-  if (groqResult) {
-    console.log(`[GlobalResolver] ✓ Groq resolved: ${drugName} → ${groqResult.salt}`);
-    resolutionCache.set(cacheKey, groqResult);
-    return groqResult;
-  }
-
-  // Tier 4: Gemini AI Multi-Key Pool
-  console.log(`[GlobalResolver] Tier 4 — Gemini AI resolver for: "${drugName}"`);
+  // Tier 3: Gemini AI Multi-Key Pool (Fast 5s timeout)
+  console.log(`[GlobalResolver] Tier 3 — Gemini AI resolver for: "${drugName}"`);
   const aiResult = await queryGeminiAI(drugName);
   if (aiResult) {
     console.log(`[GlobalResolver] ✓ Gemini AI resolved: ${drugName} → ${aiResult.salt}`);
@@ -340,8 +342,8 @@ async function resolveGlobal(drugName) {
     return aiResult;
   }
 
-  // Tier 5: NIH RxNorm
-  console.log(`[GlobalResolver] Tier 5 — NIH RxNorm lookup for: "${drugName}"`);
+  // Tier 4: NIH RxNorm (2.5s timeout)
+  console.log(`[GlobalResolver] Tier 4 — NIH RxNorm lookup for: "${drugName}"`);
   const rxResult = await queryRxNorm(drugName);
   if (rxResult) {
     console.log(`[GlobalResolver] ✓ NIH RxNorm resolved: ${drugName} → ${rxResult.salt}`);

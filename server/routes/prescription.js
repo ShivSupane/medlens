@@ -10,48 +10,80 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic'];
+    const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic', 'image/bmp'];
     if (allowed.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('Only image files (JPEG, PNG, WebP, GIF) are accepted.'));
+      cb(new Error('Only image files (JPEG, PNG, WebP, GIF, BMP) are accepted.'));
     }
   }
 });
 
-// Helper for fuzzy string matching
+// Helper for tokenized, clinically accurate string matching
 function cleanStr(s) {
   return (s || '').toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function tokenize(s) {
+  return cleanStr(s).split(' ').filter(w => w.length > 1 && !['tab', 'cap', 'syr', 'inj', 'tablets', 'capsule', 'capsules'].includes(w));
+}
+
 /**
- * Match an extracted medicine against our verified drug database.
+ * Match an extracted medicine against our verified drug database with strict precision.
+ * Prevents false substring matches (e.g. 'Cip' matching 'Glyciphage' or 'Cet' matching 'Sinarest').
  */
 function matchDrugInDatabase(extracted) {
-  const query = cleanStr(extracted.drugName || extracted.rawText || '');
-  if (!query) return null;
+  const brandQuery = cleanStr(extracted.drugName || '');
+  const rawQuery = cleanStr(extracted.rawText || '');
+  const saltQuery = cleanStr(extracted.salt || '');
 
-  // Direct match on brand or alias or salt
-  let match = drugDatabase.drugs.find((d) => {
-    const brandClean = cleanStr(d.brand);
-    if (brandClean === query || query.includes(brandClean) || brandClean.includes(query)) return true;
+  const queryCandidates = [brandQuery, rawQuery].filter(q => q && q.length >= 3);
 
-    // Check aliases
-    return (d.aliases || []).some((a) => {
-      const aliasClean = cleanStr(a);
-      return aliasClean === query || query.includes(aliasClean) || aliasClean.includes(query);
+  // 1. Exact match on brand or alias
+  for (const q of queryCandidates) {
+    const exactMatch = drugDatabase.drugs.find((d) => {
+      if (cleanStr(d.brand) === q) return true;
+      return (d.aliases || []).some((a) => cleanStr(a) === q);
     });
-  });
-
-  // If no direct brand match, try salt match
-  if (!match) {
-    match = drugDatabase.drugs.find((d) => {
-      const saltClean = cleanStr(d.saltNormalized || d.salt);
-      return query.includes(saltClean) || saltClean.includes(query);
-    });
+    if (exactMatch) return exactMatch;
   }
 
-  return match || null;
+  // 2. Token / word-boundary prefix match on brand or aliases (e.g. 'telma 40' or 'augmentin 625')
+  const brandTokens = tokenize(brandQuery.length > 2 ? brandQuery : rawQuery);
+  const primaryWord = brandTokens[0]; // e.g. 'augmentin', 'telma', 'ciplox', 'pan'
+
+  if (primaryWord && primaryWord.length >= 3) {
+    const tokenMatch = drugDatabase.drugs.find((d) => {
+      const dBrandTokens = tokenize(d.brand);
+      if (dBrandTokens[0] === primaryWord) return true;
+      return (d.aliases || []).some((a) => {
+        const aTokens = tokenize(a);
+        return aTokens[0] === primaryWord;
+      });
+    });
+    if (tokenMatch) return tokenMatch;
+  }
+
+  // 3. Salt match: match only if the primary active salt matches exactly
+  if (saltQuery && saltQuery.length >= 4) {
+    const saltTokens = tokenize(saltQuery);
+    const primarySalt = saltTokens[0];
+    if (primarySalt && primarySalt.length >= 4) {
+      const saltMatch = drugDatabase.drugs.find((d) => {
+        const dSaltTokens = tokenize(d.saltNormalized || d.salt);
+        // Only match if the primary salt matches AND both are either single-salt or multi-salt
+        if (dSaltTokens[0] === primarySalt) {
+          // If query is a single active salt, don't match a 4-ingredient complex combo
+          if (saltTokens.length === 1 && dSaltTokens.length > 2) return false;
+          return true;
+        }
+        return false;
+      });
+      if (saltMatch) return saltMatch;
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -177,8 +209,8 @@ async function enrichMedicines(extractedMeds) {
           resolvedBy: 'MedLens India Verified Database',
           rawText: med.rawText,
           drugName: med.drugName || match.brand,
-          brand: match.brand,
-          salt: match.salt,
+          brand: med.drugName || match.brand,
+          salt: med.salt || match.salt,
           saltNormalized: match.saltNormalized,
           strength: med.strength || match.strength,
           dosageForm: med.dosageForm || 'Tablet',
@@ -323,23 +355,21 @@ function generatePrescriptionSynergy(medicines) {
 // -------------------------------------------------------------
 router.post('/analyze', upload.single('prescription'), async (req, res) => {
   try {
-    let extracted;
-
-    if (req.file) {
-      extracted = await aiService.extractPrescription(
-        req.file.buffer,
-        req.file.mimetype || 'image/jpeg'
-      );
-    } else {
-      // If no file uploaded, use the sample prescription
-      extracted = JSON.parse(JSON.stringify(aiService.SAMPLE_PRESCRIPTION));
-      extracted.providerUsed = 'MedLens Sample Regimen';
+    if (!req.file) {
+      return res.status(400).json({
+        error: 'No prescription file uploaded. Please upload a clear photo of your prescription (JPEG, PNG, WebP).'
+      });
     }
+
+    const extracted = await aiService.extractPrescription(
+      req.file.buffer,
+      req.file.mimetype || 'image/jpeg'
+    );
 
     const rawMeds = extracted.medicines || [];
     if (rawMeds.length === 0) {
       return res.status(400).json({
-        error: 'No medicines were detected in this image. Please ensure the prescription photo is well-lit and oriented upright.'
+        error: 'No medicines were detected in this image. Please ensure the prescription photo is well-lit, in focus, and oriented upright, or type the prescription into the "Analyze Text" tab.'
       });
     }
 
@@ -385,10 +415,11 @@ router.post('/analyze', upload.single('prescription'), async (req, res) => {
 // -------------------------------------------------------------
 router.post('/analyze-text', express.json(), async (req, res) => {
   try {
-    const { text } = req.body;
-    if (!text || !text.trim()) {
+    const rawInput = req.body.text || req.body.prescriptionText;
+    if (!rawInput || !rawInput.trim()) {
       return res.status(400).json({ error: 'Prescription text cannot be empty.' });
     }
+    const text = rawInput.trim();
 
     const extracted = await aiService.extractPrescriptionText(text.trim());
     const rawMeds = extracted.medicines || [];

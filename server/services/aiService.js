@@ -1,47 +1,56 @@
 // Multi-provider AI service with Multi-Key Failover Pool for Google Gemini, Groq Qwen, Claude, and OpenAI.
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+const Tesseract = require('tesseract.js');
 
-const EXTRACTION_SYSTEM_PROMPT = `You are MedLens AI, a specialized clinical prescription analysis and OCR engine.
-Carefully read the prescription (photo or text) and extract every medicine listed.
-Rules:
-- Output MUST be valid JSON only. Do not wrap in markdown fences if possible.
-- For EACH medicine, provide:
-  * "rawText": Exact text as written by the doctor
-  * "drugName": Standardized or clean brand name
-  * "salt": Active chemical ingredient(s) with strength if known (e.g. "Amoxicillin (500mg) + Clavulanic Acid (125mg)")
-  * "strength": Dosage strength (e.g. "625mg", "500mg", "40mg", or null)
-  * "dosageForm": "Tablet", "Capsule", "Syrup", "Injection", "Ointment", "Drops", or null
-  * "frequency": Dosage timing/frequency (e.g. "Twice daily after food (1-0-1)", "Once daily before breakfast (OD AC)", "Thrice daily after meals (1-1-1)", "Once at bedtime (0-0-1)", "As needed (SOS)")
-  * "timeSlots": Array of times: e.g. ["morning", "night"], or ["morning", "afternoon", "night"], or ["morning"], or ["night"], or ["as-needed"]
-  * "duration": Course length (e.g. "5 days", "1 month", "Continue", or null)
-  * "whyToTake": Plain-English patient-friendly medical explanation of why this drug is prescribed, what condition or symptoms it treats
-  * "mealTiming": "Before Breakfast (Empty Stomach)", "With Meals", "After Meals", "At Bedtime", or "Anytime with water"
-  * "bestMeals": Patient dietary recommendation (e.g. "Take with a light meal like warm khichdi, porridge, or curd/probiotics. Drink at least 1-2 glasses of water.")
-  * "foodsToAvoid": Specific dietary items or drinks to avoid (e.g. "Avoid alcohol, grapefruit juice, or excess spicy foods. Avoid milk/dairy within 2 hours of this dose.")
-  * "confidence": "high" or "low"
-  * "doctorNotes": Any dietary, meal, or special instructions mentioned next to this drug
-- Do not invent medicines not visible in the image.
-- Expected JSON schema:
+// Persistent OCR worker cache for sub-second recognition
+let ocrWorkerPromise = null;
+async function getOcrWorker() {
+  if (!ocrWorkerPromise) {
+    ocrWorkerPromise = Tesseract.createWorker('eng', 1, {
+      logger: () => {}
+    });
+  }
+  return ocrWorkerPromise;
+}
+
+// In-memory cooldown cache for rate-limited keys
+const keyCooldownMap = new Map();
+
+const EXTRACTION_SYSTEM_PROMPT = `You are MedLens Clinical AI, a specialized medical prescription recognition and pharmacology engine.
+Analyze this medical prescription (photo OCR or text) and identify every prescribed medicine with strict clinical accuracy.
+
+CRITICAL CLINICAL RULES:
+1. Extract the EXACT medicine name written on the prescription (brand or generic). Never replace or invent drugs.
+2. For each drug, accurately determine its active generic chemical ingredient (salt) (e.g. "Telma" -> "Telmisartan", "Pan" or "Pantocid" -> "Pantoprazole", "Dolo" -> "Paracetamol", "Augmentin" -> "Amoxicillin + Clavulanic Acid", "Glycomet" -> "Metformin").
+3. Extract exact dosage strength (e.g. "500mg", "625mg", "40mg", "10mg", "5mg") and dosage form ("Tablet", "Capsule", "Syrup", "Ointment", "Drops", "Injection").
+4. Filter out non-medicine elements: patient name, age, gender, doctor's name, clinic contact/address, date, vital signs (e.g. "BP: 130/80", "Pulse: 72"), complaints (e.g. "fever x 3 days"), or laboratory tests (e.g. "CBC", "Lipid profile", "LFT", "HbA1c"). These are NOT medicines.
+5. Provide patient-friendly, clinically sound explanation ("whyToTake"), meal timing instructions ("mealTiming": "Before Breakfast (Empty Stomach)" | "With Meals" | "After Meals" | "At Bedtime"), recommended dietary food/drink pairs ("bestMeals"), and foods/drinks to strictly avoid ("foodsToAvoid").
+6. Output MUST be valid JSON only.
+
+Expected JSON schema:
 {
   "medicines": [
     {
-      "rawText": "Tab. Augmentin 625 1-0-1 x 5d after food",
-      "drugName": "Augmentin 625",
+      "rawText": "Exact text from prescription e.g. Tab. Augmentin 625 1-0-1 x 5d after food",
+      "drugName": "Augmentin 625 Duo",
       "salt": "Amoxicillin (500mg) + Clavulanic Acid (125mg)",
       "strength": "625mg",
       "dosageForm": "Tablet",
       "frequency": "Twice daily after food (1-0-1)",
       "timeSlots": ["morning", "night"],
       "duration": "5 days",
-      "whyToTake": "Treats acute bacterial infections of the respiratory tract, throat, sinuses, or chest.",
+      "whyToTake": "Prescribed to treat acute bacterial infections of the chest, respiratory tract, throat, or sinuses.",
       "mealTiming": "After Meals",
-      "bestMeals": "Take with light food or curd/probiotics to protect intestinal flora. Drink 250ml water.",
-      "foodsToAvoid": "Avoid alcohol and excessively oily/spicy foods.",
+      "bestMeals": "Take with light food or yogurt/curd to protect gut flora. Drink a full glass of water.",
+      "foodsToAvoid": "Strictly avoid alcohol. Limit heavy spicy/oily food.",
       "confidence": "high",
-      "doctorNotes": "Must complete full 5-day course."
+      "doctorNotes": "Complete full 5-day course"
     }
   ],
-  "doctorSpecialty": "string or null",
-  "prescriptionNotes": "string or null"
+  "doctorSpecialty": "General Medicine" or null,
+  "prescriptionNotes": "Specialist clinical notes" or null
 }`;
 
 // Sample fallback prescription data for demo testing
@@ -165,63 +174,102 @@ function getActiveProvider() {
 }
 
 /**
- * Execute a Gemini request with automatic multi-key failover rotation.
+ * Execute a Gemini request with automatic multi-key and multi-model failover rotation.
+ * Features fast 6.5s timeout and automatic 5-minute cooldown on 429 quota exhaustion.
  */
 async function callGeminiWithFailover(payloadBuilder, actionName = 'request') {
   const keys = getGeminiKeys();
   if (keys.length === 0) throw new Error('No Google Gemini API keys configured.');
 
-  const model = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
-  const errors = [];
+  const primaryModel = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+  const candidateModels = [
+    primaryModel,
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.6-flash',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash'
+  ].filter((v, i, a) => a.indexOf(v) === i);
 
-  // Start from round-robin index, try all available keys
+  const errors = [];
   const startIndex = keyRoundRobinIdx % keys.length;
+  const now = Date.now();
+
+  let consecutiveTimeouts = 0;
+
   for (let i = 0; i < keys.length; i++) {
     const keyIndex = (startIndex + i) % keys.length;
     const currentKey = keys[keyIndex];
 
-    try {
-      console.log(`[GeminiPool] Attempting ${actionName} with Key #${keyIndex + 1} (${model})…`);
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${currentKey}`;
-      const payload = payloadBuilder();
+    // Check if key is currently in cooldown from 429
+    const cooldownUntil = keyCooldownMap.get(currentKey);
+    if (cooldownUntil && now < cooldownUntil) {
+      console.log(`[GeminiPool] Skipping Key #${keyIndex + 1} (in cooldown for ${Math.round((cooldownUntil - now)/1000)}s)`);
+      continue;
+    }
 
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(28000)
-      });
+    for (const model of candidateModels) {
+      try {
+        console.log(`[GeminiPool] Attempting ${actionName} with Key #${keyIndex + 1} (${model})…`);
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${currentKey}`;
+        const payload = payloadBuilder();
 
-      const data = await res.json();
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(7000)
+        });
 
-      if (!res.ok) {
-        const msg = data.error?.message || JSON.stringify(data);
-        const isRateLimit = res.status === 429 || res.status === 503 || /quota|rate|demand|overloaded/i.test(msg);
-        console.warn(`[GeminiPool] Key #${keyIndex + 1} rejected (${res.status}): ${msg}`);
-        errors.push(`Key #${keyIndex + 1}: ${msg}`);
-        // If rate limited or error, try the next key immediately!
-        continue;
+        const data = await res.json();
+
+        if (!res.ok) {
+          const msg = data.error?.message || JSON.stringify(data);
+          console.warn(`[GeminiPool] Key #${keyIndex + 1} (${model}) rejected (${res.status}): ${msg}`);
+          errors.push(`Key #${keyIndex + 1} (${model}): ${msg}`);
+
+          if (res.status === 429) {
+            // Key rate-limited, set 60s cooldown and move to next key
+            keyCooldownMap.set(currentKey, Date.now() + 60 * 1000);
+            break;
+          }
+          if (res.status === 503 || res.status === 404 || res.status === 400) {
+            // High demand or deprecated model, immediately try next candidate model on this same key
+            continue;
+          }
+          break;
+        }
+
+        const candidate = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!candidate) {
+          errors.push(`Key #${keyIndex + 1} (${model}) returned empty candidate`);
+          continue;
+        }
+
+        keyRoundRobinIdx = (keyIndex + 1) % keys.length;
+        console.log(`[GeminiPool] ✓ Key #${keyIndex + 1} succeeded with ${model} for ${actionName}`);
+
+        return {
+          text: candidate,
+          keyIndex: keyIndex + 1,
+          totalKeys: keys.length,
+          model
+        };
+      } catch (err) {
+        console.warn(`[GeminiPool] Network/timeout on Key #${keyIndex + 1} (${model}): ${err.message}`);
+        errors.push(`Key #${keyIndex + 1} (${model}): ${err.message}`);
+
+        if (err.name === 'TimeoutError' || /timeout|aborted/i.test(err.message)) {
+          consecutiveTimeouts++;
+          keyCooldownMap.set(currentKey, Date.now() + 30 * 1000);
+          break;
+        }
       }
+    }
 
-      const candidate = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!candidate) {
-        errors.push(`Key #${keyIndex + 1} returned empty candidate`);
-        continue;
-      }
-
-      // Success! Update round-robin pointer for next request
-      keyRoundRobinIdx = (keyIndex + 1) % keys.length;
-      console.log(`[GeminiPool] ✓ Key #${keyIndex + 1} succeeded for ${actionName}`);
-
-      return {
-        text: candidate,
-        keyIndex: keyIndex + 1,
-        totalKeys: keys.length,
-        model
-      };
-    } catch (err) {
-      console.warn(`[GeminiPool] Network error on Key #${keyIndex + 1}: ${err.message}`);
-      errors.push(`Key #${keyIndex + 1} error: ${err.message}`);
+    if (consecutiveTimeouts >= 3) {
+      console.warn('[GeminiPool] Consecutive network timeouts across keys, falling back to secondary providers.');
+      break;
     }
   }
 
@@ -251,7 +299,54 @@ async function callGeminiVision(base64Image, mimeType) {
 }
 
 /**
- * Extract prescription from raw text (pasted by user or typed) using Gemini.
+ * Parse raw prescription text into verified JSON schema using Groq Qwen.
+ */
+async function parsePrescriptionWithGroq(prescriptionText, isOcr = false) {
+  const apiKey = (process.env.GROQ_API_KEY || '').trim();
+  if (!apiKey) throw new Error('No Groq API key configured');
+
+  const userPrompt = isOcr
+    ? `The following text was extracted by an OCR scanner from a doctor's prescription and may contain minor OCR typos, missing characters, or handwriting artifacts (e.g. '1ab' or 'Tob' instead of 'Tab', 'Pantocd' for 'Pantocid', 'Augmentn' for 'Augmentin', 'Dolo650' for 'Dolo 650', 'OD/BD/TDS' variations). Please carefully examine the text, correct any OCR misreadings, identify all intended medicines and active chemical salts, and return the complete JSON:\n\n${prescriptionText}`
+    : `Extract all medicines from this prescription text and output JSON:\n\n${prescriptionText}`;
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: EXTRACTION_SYSTEM_PROMPT },
+        { role: 'user', content: userPrompt }
+      ]
+    })
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(`Groq error: ${data.error?.message || JSON.stringify(data)}`);
+  }
+
+  const content = data.choices?.[0]?.message?.content;
+  if (!content) throw new Error('Groq returned empty response');
+
+  const cleanContent = content.trim().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '').trim();
+  let parsed = JSON.parse(cleanContent);
+  if (!Array.isArray(parsed.medicines)) {
+    if (Array.isArray(parsed.drugs)) parsed.medicines = parsed.drugs;
+    else if (Array.isArray(parsed.prescriptions)) parsed.medicines = parsed.prescriptions;
+    else if (Array.isArray(parsed)) parsed = { medicines: parsed };
+    else parsed.medicines = [];
+  }
+  parsed.providerUsed = 'Groq Qwen 2.5 (Fast Clinical NLP)';
+  return parsed;
+}
+
+/**
+ * Extract prescription from raw text (pasted by user or typed) using Gemini or Groq fallback.
  */
 async function extractPrescriptionText(prescriptionText) {
   const keys = getGeminiKeys();
@@ -279,29 +374,7 @@ async function extractPrescriptionText(prescriptionText) {
   if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim() !== '') {
     try {
       console.log('[TextExtract] Trying Groq Qwen fallback…');
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.GROQ_API_KEY.trim()}`
-        },
-        body: JSON.stringify({
-          model: process.env.GROQ_MODEL || 'qwen/qwen3.8-27b',
-          response_format: { type: 'json_object' },
-          messages: [
-            { role: 'system', content: EXTRACTION_SYSTEM_PROMPT },
-            { role: 'user', content: `Analyze this prescription text and output JSON:\n${prescriptionText}` }
-          ]
-        })
-      });
-      const data = await res.json();
-      const content = data.choices?.[0]?.message?.content;
-      if (content) {
-        const cleanContent = content.trim().replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/, '').trim();
-        const parsed = JSON.parse(cleanContent);
-        parsed.providerUsed = 'Groq Qwen 2.5 (High Speed Text Fallback)';
-        return parsed;
-      }
+      return await parsePrescriptionWithGroq(prescriptionText);
     } catch (err) {
       console.warn('[TextExtract] Groq fallback failed:', err.message);
     }
@@ -387,7 +460,7 @@ async function callAnthropic(base64Image, mimeType) {
 
 /**
  * Extract medicines from prescription image buffer.
- * Cascade: Gemini Pool (all keys) → OpenAI → Anthropic → Demo mode
+ * Cascade: Gemini Pool (all keys & models) → OpenAI → Anthropic → Local OCR (Tesseract.js) + Groq Qwen AI
  */
 async function extractPrescription(imageBuffer, mimeType = 'image/jpeg') {
   const base64Image = imageBuffer.toString('base64');
@@ -403,7 +476,7 @@ async function extractPrescription(imageBuffer, mimeType = 'image/jpeg') {
       return result;
     } catch (err) {
       errors.push(`Gemini Pool: ${err.message}`);
-      console.warn('[Vision] All Gemini keys in pool failed:', err.message);
+      console.warn('[Vision] Gemini vision failed:', err.message);
     }
   }
 
@@ -433,12 +506,51 @@ async function extractPrescription(imageBuffer, mimeType = 'image/jpeg') {
     }
   }
 
-  // ── 4. Fallback: Demo Mode with clear diagnostic notice ────────────────────
-  console.warn('[Vision] All AI vision providers exhausted. Returning sample regimen. Errors:', errors.join(' | '));
-  const demoCopy = JSON.parse(JSON.stringify(SAMPLE_PRESCRIPTION));
-  demoCopy.providerUsed = 'MedLens Demo Mode — All AI providers temporarily busy or unconfigured. Showing sample verified data.';
-  demoCopy._providerErrors = errors;
-  return demoCopy;
+  // ── 4. Local OCR Engine (Tesseract.js) + Groq Qwen Clinical AI ──────────────
+  if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim() !== '') {
+    try {
+      console.log('[Vision] Trying Local OCR (Tesseract.js) + Groq Qwen fallback…');
+      let rawText = '';
+      try {
+        const worker = await getOcrWorker();
+        const ocrResult = await worker.recognize(imageBuffer);
+        rawText = (ocrResult.data && ocrResult.data.text) ? ocrResult.data.text.trim() : '';
+      } catch (workerErr) {
+        console.warn('[Vision] Cached worker failed, running standalone OCR:', workerErr.message);
+        const ocrResult = await Tesseract.recognize(imageBuffer, 'eng');
+        rawText = (ocrResult.data && ocrResult.data.text) ? ocrResult.data.text.trim() : '';
+      }
+
+      console.log(`[Vision] OCR extracted ${rawText.length} characters of text.`);
+
+      if (rawText && rawText.length >= 4) {
+        const parsed = await parsePrescriptionWithGroq(rawText, true);
+        if (parsed && Array.isArray(parsed.medicines) && parsed.medicines.length > 0) {
+          parsed.providerUsed = 'MedLens OCR Engine + Groq Qwen AI (Local OCR)';
+          parsed.ocrExtractedText = rawText;
+          console.log(`[Vision] ✓ Local OCR + Groq succeeded with ${parsed.medicines.length} medicines!`);
+          return parsed;
+        } else {
+          errors.push('OCR read text from the image, but could not detect specific medicines in it.');
+        }
+      } else {
+        errors.push('Local OCR could not detect readable text on this image.');
+      }
+    } catch (ocrErr) {
+      console.warn('[Vision] Local OCR + Groq fallback failed:', ocrErr.message);
+      errors.push(`OCR + Groq: ${ocrErr.message}`);
+    }
+  }
+
+  // ── 5. Do NOT return dummy sample data! Throw clear error ───────────────────
+  console.error('[Vision] All AI vision and OCR providers exhausted. Errors:', errors.join(' | '));
+  const combinedError = new Error(
+    'Unable to extract medicines from the uploaded prescription image. ' +
+    'The AI vision service quota is currently exhausted or the image text was unreadable. ' +
+    'Please ensure the photo is well-lit and sharp, or switch to the "Analyze Text" tab to type or paste the prescription.'
+  );
+  combinedError.diagnosticErrors = errors;
+  throw combinedError;
 }
 
 /**

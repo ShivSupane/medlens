@@ -41,7 +41,7 @@ async function queryOpenFdaDrugDatabase(drugName) {
     if (!clean) return null;
 
     const url = `https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${encodeURIComponent(clean)}"&limit=1`;
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: AbortSignal.timeout(3000) });
     if (!res.ok) return null;
 
     const data = await res.json();
