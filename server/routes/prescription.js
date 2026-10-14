@@ -89,26 +89,38 @@ function matchDrugInDatabase(extracted) {
 /**
  * Determine daily dosage time slots from frequency text
  */
-function parseTimeSlots(frequency, doctorNotes) {
-  const combined = ((frequency || '') + ' ' + (doctorNotes || '')).toLowerCase();
+function parseTimeSlots(frequency, doctorNotes, mealTiming) {
+  const combined = ((frequency || '') + ' ' + (doctorNotes || '') + ' ' + (mealTiming || '')).toLowerCase();
+
+  // SOS / as-needed first — overrides everything
+  if (/\bsos\b|as needed|prn/i.test(combined)) {
+    return ['as-needed'];
+  }
+  // Thrice daily (TDS / 1-1-1)
   if (/1-1-1|tds|tid|thrice|3 times/i.test(combined)) {
     return ['morning', 'afternoon', 'night'];
   }
+  // Twice daily (BD / 1-0-1)
   if (/1-0-1|bd|bid|twice daily|morning and night|morning & night/i.test(combined)) {
     return ['morning', 'night'];
   }
-  if (/0-0-1|hs|bedtime|at night|before sleep|night only/i.test(combined)) {
+  // Night-only / bedtime patterns — must come BEFORE generic 'od' / 'once daily'
+  if (/0-0-1|\bhs\b|bedtime|at bedtime|at night|before sleep|night only|sleep time/i.test(combined)) {
     return ['night'];
   }
-  if (/1-0-0|od ac|od|morning|breakfast|once daily/i.test(combined)) {
-    return ['morning'];
-  }
-  if (/0-1-0|lunch|afternoon/i.test(combined)) {
+  // Afternoon / lunch only
+  if (/0-1-0|\blunch\b|\bafternoon\b/i.test(combined)) {
     return ['afternoon'];
   }
-  if (/sos|as needed|prn/i.test(combined)) {
-    return ['as-needed'];
+  // Evening / snack time
+  if (/\bevening\b|\bsnack\b|5 pm|6 pm|5pm|6pm/i.test(combined)) {
+    return ['evening'];
   }
+  // Once daily morning — OD / OD AC / morning / breakfast
+  if (/1-0-0|od ac|\bod\b|\bmorning\b|\bbreakfast\b|once daily|once a day/i.test(combined)) {
+    return ['morning'];
+  }
+  // Default: morning + night (standard BD fallback)
   return ['morning', 'night'];
 }
 
@@ -202,7 +214,7 @@ async function enrichMedicines(extractedMeds) {
         totalGenericCost += bestAlt ? bestAlt.priceINR : match.priceINR;
 
         const defaultMeal = deriveMealGuidance(match.class, match.salt, match.foodInstructions);
-        const timeSlots = med.timeSlots && med.timeSlots.length ? med.timeSlots : parseTimeSlots(med.frequency, med.doctorNotes);
+        const timeSlots = med.timeSlots && med.timeSlots.length ? med.timeSlots : parseTimeSlots(med.frequency, med.doctorNotes, med.mealTiming || defaultMeal.mealTiming);
 
         return {
           isVerified: true,
@@ -250,7 +262,7 @@ async function enrichMedicines(extractedMeds) {
         totalGenericCost += bestAlt ? bestAlt.priceINR : (globalMatch.priceINR || 0);
 
         const defaultMeal = deriveMealGuidance(globalMatch.class, globalMatch.salt, globalMatch.foodInstructions);
-        const timeSlots = med.timeSlots && med.timeSlots.length ? med.timeSlots : parseTimeSlots(med.frequency, med.doctorNotes);
+        const timeSlots = med.timeSlots && med.timeSlots.length ? med.timeSlots : parseTimeSlots(med.frequency, med.doctorNotes, med.mealTiming || globalMatch.mealTiming || defaultMeal.mealTiming);
 
         return {
           isVerified: true,
@@ -292,7 +304,7 @@ async function enrichMedicines(extractedMeds) {
         drugName: med.drugName || med.rawText,
         strength: med.strength || 'N/A',
         frequency: med.frequency || 'As advised by doctor',
-        timeSlots: parseTimeSlots(med.frequency, med.doctorNotes),
+        timeSlots: parseTimeSlots(med.frequency, med.doctorNotes, med.mealTiming),
         duration: med.duration || 'Full course',
         confidence: med.confidence || 'low',
         doctorNotes: med.doctorNotes || '',

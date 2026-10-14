@@ -479,7 +479,7 @@ function renderDailyTimetable(medicines) {
   });
 
   timetableGrid.innerHTML = Object.values(slots)
-    .filter((slot) => slot.meds.length > 0 || slot.title !== 'As Needed (SOS)')
+    .filter((slot) => slot.meds.length > 0)
     .map(
       (slot) => `
       <div class="time-slot-card">
@@ -488,20 +488,16 @@ function renderDailyTimetable(medicines) {
           <div class="time-slot-time">${slot.time}</div>
         </div>
         <div class="time-slot-meds">
-          ${
-            slot.meds.length > 0
-              ? slot.meds
-                  .map(
-                    (p) => `
-                <div class="slot-pill-item">
-                  <div class="slot-pill-name">${escapeHtml(p.name)}</div>
-                  <div class="slot-pill-dose">${escapeHtml(p.dose)}</div>
-                </div>
-              `
-                  )
-                  .join('')
-              : '<div class="slot-empty">No medicine scheduled</div>'
-          }
+          ${slot.meds
+            .map(
+              (p) => `
+            <div class="slot-pill-item">
+              <div class="slot-pill-name">${escapeHtml(p.name)}</div>
+              <div class="slot-pill-dose">${escapeHtml(p.dose)}</div>
+            </div>
+          `
+            )
+            .join('')}
         </div>
       </div>
     `
