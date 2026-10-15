@@ -175,9 +175,9 @@ function getActiveProvider() {
 
 /**
  * Execute a Gemini request with automatic multi-key and multi-model failover rotation.
- * Features fast 6.5s timeout and automatic 5-minute cooldown on 429 quota exhaustion.
+ * Supports separate timeouts for vision (image) vs text requests.
  */
-async function callGeminiWithFailover(payloadBuilder, actionName = 'request') {
+async function callGeminiWithFailover(payloadBuilder, actionName = 'request', timeoutMs = 7000) {
   const keys = getGeminiKeys();
   if (keys.length === 0) throw new Error('No Google Gemini API keys configured.');
 
@@ -218,7 +218,7 @@ async function callGeminiWithFailover(payloadBuilder, actionName = 'request') {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
-          signal: AbortSignal.timeout(7000)
+          signal: AbortSignal.timeout(timeoutMs)
         });
 
         const data = await res.json();
@@ -290,7 +290,7 @@ async function callGeminiVision(base64Image, mimeType) {
       ]
     }],
     generationConfig: { response_mime_type: 'application/json', temperature: 0.1 }
-  }), 'Vision OCR');
+  }), 'Vision OCR', 15000); // 15s timeout for image uploads
 
   const cleaned = result.text.trim().replace(/^```json\s*/i, '').replace(/```$/, '').trim();
   const parsed = JSON.parse(cleaned);
@@ -460,94 +460,134 @@ async function callAnthropic(base64Image, mimeType) {
 
 /**
  * Extract medicines from prescription image buffer.
- * Cascade: Gemini Pool (all keys & models) → OpenAI → Anthropic → Local OCR (Tesseract.js) + Groq Qwen AI
+ *
+ * Cascade order — best available first based on configured keys:
+ *   1. Gemini Vision Pool  (multimodal, 3 keys, best image understanding)
+ *   2. Tesseract OCR → Groq text parse  (free OCR + fast Groq NLP, no vision API needed)
+ *   3. Tesseract OCR → Gemini text parse (reuse Gemini keys in text mode on OCR output)
+ *   4. OpenAI Vision  (only if key + credits present)
+ *   5. Anthropic Vision (only if key present)
  */
 async function extractPrescription(imageBuffer, mimeType = 'image/jpeg') {
   const base64Image = imageBuffer.toString('base64');
   const errors = [];
 
-  // ── 1. Google Gemini Pool with Failover (Key 1 -> Key 2 -> Key 3) ─────────
+  // ── 1. Gemini Vision Pool (Key 1 → Key 2 → Key 3, 15s timeout per key) ───
   const geminiKeys = getGeminiKeys();
   if (geminiKeys.length > 0) {
     try {
-      console.log(`[Vision] Starting extraction across pool of ${geminiKeys.length} Gemini keys…`);
+      console.log(`[Vision] Step 1 — Gemini Vision Pool (${geminiKeys.length} keys)…`);
       const result = await callGeminiVision(base64Image, mimeType);
-      console.log(`[Vision] ✓ Gemini succeeded! Provider: ${result.providerUsed}`);
+      console.log(`[Vision] ✓ Gemini Vision succeeded: ${result.providerUsed}`);
       return result;
     } catch (err) {
-      errors.push(`Gemini Pool: ${err.message}`);
-      console.warn('[Vision] Gemini vision failed:', err.message);
+      errors.push(`Gemini Vision: ${err.message}`);
+      console.warn('[Vision] Gemini Vision failed, moving to OCR fallback:', err.message);
     }
   }
 
-  // ── 2. OpenAI GPT-4o-mini — vision fallback ─────────────────────────────────
+  // ── 2 & 3. Tesseract OCR → (Groq parse THEN Gemini text parse) ──────────
+  // OCR runs locally — no API key required. Results fed into AI text parsers.
+  console.log('[Vision] Step 2 — Tesseract local OCR…');
+  let ocrText = '';
+  try {
+    try {
+      const worker = await getOcrWorker();
+      const ocrResult = await worker.recognize(imageBuffer);
+      ocrText = (ocrResult.data?.text || '').trim();
+    } catch (workerErr) {
+      console.warn('[Vision] Cached OCR worker failed, using standalone:', workerErr.message);
+      const ocrResult = await Tesseract.recognize(imageBuffer, 'eng');
+      ocrText = (ocrResult.data?.text || '').trim();
+    }
+    console.log(`[Vision] OCR extracted ${ocrText.length} characters.`);
+  } catch (ocrErr) {
+    console.warn('[Vision] Tesseract OCR failed:', ocrErr.message);
+    errors.push(`Tesseract OCR: ${ocrErr.message}`);
+  }
+
+  if (ocrText.length >= 4) {
+    // ── 2a. OCR text → Groq Qwen (fastest NLP parser, free tier) ────────────
+    if ((process.env.GROQ_API_KEY || '').trim()) {
+      try {
+        console.log('[Vision] Step 2a — OCR text → Groq Qwen parse…');
+        const parsed = await parsePrescriptionWithGroq(ocrText, true);
+        if (parsed && Array.isArray(parsed.medicines) && parsed.medicines.length > 0) {
+          parsed.providerUsed = 'MedLens OCR + Groq Qwen AI';
+          parsed.ocrExtractedText = ocrText;
+          console.log(`[Vision] ✓ OCR + Groq succeeded with ${parsed.medicines.length} medicines!`);
+          return parsed;
+        }
+        errors.push('OCR+Groq: parsed but no medicines detected');
+      } catch (groqErr) {
+        errors.push(`OCR+Groq: ${groqErr.message}`);
+        console.warn('[Vision] OCR + Groq failed:', groqErr.message);
+      }
+    }
+
+    // ── 2b. OCR text → Gemini text API (no image upload, much faster) ───────
+    if (geminiKeys.length > 0) {
+      try {
+        console.log('[Vision] Step 2b — OCR text → Gemini text parse…');
+        const result = await callGeminiWithFailover(() => ({
+          contents: [{
+            parts: [{ text: `${EXTRACTION_SYSTEM_PROMPT}\nThe following text was extracted by OCR from a prescription. Extract all medicines and return valid JSON only.\n\nOCR Text:\n${ocrText}` }]
+          }],
+          generationConfig: { response_mime_type: 'application/json', temperature: 0.1 }
+        }), 'OCR→Gemini Text', 10000);
+
+        const cleaned = result.text.trim().replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+        const parsed = JSON.parse(cleaned);
+        if (parsed && Array.isArray(parsed.medicines) && parsed.medicines.length > 0) {
+          parsed.providerUsed = `MedLens OCR + Gemini Text (Key #${result.keyIndex}/${result.totalKeys})`;
+          parsed.ocrExtractedText = ocrText;
+          console.log(`[Vision] ✓ OCR + Gemini text succeeded with ${parsed.medicines.length} medicines!`);
+          return parsed;
+        }
+        errors.push('OCR+GeminiText: parsed but no medicines detected');
+      } catch (gemTextErr) {
+        errors.push(`OCR+GeminiText: ${gemTextErr.message}`);
+        console.warn('[Vision] OCR + Gemini text failed:', gemTextErr.message);
+      }
+    }
+  } else {
+    errors.push('OCR: insufficient text extracted from image (image may be blurry, dark, or low-res)');
+  }
+
+  // ── 4. OpenAI Vision — only if key has credits ───────────────────────────
   if ((process.env.OPENAI_API_KEY || '').trim()) {
     try {
-      console.log('[Vision] Trying OpenAI GPT-4o-mini fallback…');
+      console.log('[Vision] Step 4 — OpenAI GPT-4o-mini Vision…');
       const result = await callOpenAI(base64Image, mimeType);
-      console.log('[Vision] ✓ OpenAI succeeded');
+      console.log('[Vision] ✓ OpenAI Vision succeeded');
       return result;
     } catch (err) {
       errors.push(`OpenAI: ${err.message}`);
-      console.warn('[Vision] OpenAI failed:', err.message);
+      console.warn('[Vision] OpenAI Vision failed:', err.message);
     }
   }
 
-  // ── 3. Anthropic Claude — vision fallback ───────────────────────────────────
+  // ── 5. Anthropic Claude Vision — only if key present ────────────────────
   if ((process.env.ANTHROPIC_API_KEY || '').trim()) {
     try {
-      console.log('[Vision] Trying Anthropic Claude fallback…');
+      console.log('[Vision] Step 5 — Anthropic Claude Vision…');
       const result = await callAnthropic(base64Image, mimeType);
-      console.log('[Vision] ✓ Anthropic succeeded');
+      console.log('[Vision] ✓ Anthropic Vision succeeded');
       return result;
     } catch (err) {
       errors.push(`Anthropic: ${err.message}`);
-      console.warn('[Vision] Anthropic failed:', err.message);
+      console.warn('[Vision] Anthropic Vision failed:', err.message);
     }
   }
 
-  // ── 4. Local OCR Engine (Tesseract.js) + Groq Qwen Clinical AI ──────────────
-  if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY.trim() !== '') {
-    try {
-      console.log('[Vision] Trying Local OCR (Tesseract.js) + Groq Qwen fallback…');
-      let rawText = '';
-      try {
-        const worker = await getOcrWorker();
-        const ocrResult = await worker.recognize(imageBuffer);
-        rawText = (ocrResult.data && ocrResult.data.text) ? ocrResult.data.text.trim() : '';
-      } catch (workerErr) {
-        console.warn('[Vision] Cached worker failed, running standalone OCR:', workerErr.message);
-        const ocrResult = await Tesseract.recognize(imageBuffer, 'eng');
-        rawText = (ocrResult.data && ocrResult.data.text) ? ocrResult.data.text.trim() : '';
-      }
-
-      console.log(`[Vision] OCR extracted ${rawText.length} characters of text.`);
-
-      if (rawText && rawText.length >= 4) {
-        const parsed = await parsePrescriptionWithGroq(rawText, true);
-        if (parsed && Array.isArray(parsed.medicines) && parsed.medicines.length > 0) {
-          parsed.providerUsed = 'MedLens OCR Engine + Groq Qwen AI (Local OCR)';
-          parsed.ocrExtractedText = rawText;
-          console.log(`[Vision] ✓ Local OCR + Groq succeeded with ${parsed.medicines.length} medicines!`);
-          return parsed;
-        } else {
-          errors.push('OCR read text from the image, but could not detect specific medicines in it.');
-        }
-      } else {
-        errors.push('Local OCR could not detect readable text on this image.');
-      }
-    } catch (ocrErr) {
-      console.warn('[Vision] Local OCR + Groq fallback failed:', ocrErr.message);
-      errors.push(`OCR + Groq: ${ocrErr.message}`);
-    }
-  }
-
-  // ── 5. Do NOT return dummy sample data! Throw clear error ───────────────────
-  console.error('[Vision] All AI vision and OCR providers exhausted. Errors:', errors.join(' | '));
+  // ── 6. All providers exhausted ──────────────────────────────────────────
+  console.error('[Vision] All providers exhausted. Errors:', errors.join(' | '));
   const combinedError = new Error(
-    'Unable to extract medicines from the uploaded prescription image. ' +
-    'The AI vision service quota is currently exhausted or the image text was unreadable. ' +
-    'Please ensure the photo is well-lit and sharp, or switch to the "Analyze Text" tab to type or paste the prescription.'
+    'Unable to extract medicines from this prescription image. ' +
+    'All AI vision providers are rate-limited and OCR could not read the text clearly. ' +
+    'Try: (1) switch to the "Analyze Text" tab and type the medicines, ' +
+    '(2) retake the photo with better lighting and focus, or ' +
+    '(3) wait a few minutes for API quota to reset.'
   );
   combinedError.diagnosticErrors = errors;
   throw combinedError;
